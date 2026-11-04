@@ -9,12 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned - Phase 6: Sentiment Analysis Engine
-- Financial news and social feed abstraction adapter (RSS / CryptoPanic / Mock adapter).
-- Content deduplication using SHA-256 cryptographic hashing and fuzzy title matching.
-- FinBERT financial sentiment inference pipeline (Bullish, Bearish, Neutral with confidence scores).
-- Publication timestamp parsing and exponential time-decay discounting.
-- Per-asset sentiment aggregation index and staleness pruning.
+### Planned - Phase 7: Autonomous Decision Engine
+- Strict decision schema definition (`Symbol`, `Decision`, `Confidence`, `Signals`, `ML`, `Sentiment`, `Risk`, `Rationale`).
+- Central Decision Arbiter combining technical, ML, and sentiment inputs.
+- Market regime classifier (Trending Bull, Trending Bear, Ranging, High Volatility).
+- Default-to-HOLD safety state on stale data, conflicting signals, or model degradation.
+- Transparent explanation generator producing interpretable rationales for every decision.
+
+---
+
+## [0.1.0-alpha.6] - 2026-11-04
+
+### Added - Phase 6: Sentiment Analysis Engine
+- Implemented `NewsArticle`, `SentimentScore`, and `AggregatedSentiment` Pydantic models with UTC normalization, polarity, confidence, and bounded probability outputs.
+- Implemented `NewsDeduplicator` utilizing SHA-256 cryptographic title hashing and Jaccard token similarity ($\ge 0.80$) with TTL-based pruning and dynamic cache size constraints to eliminate duplicate syndicated wire stories.
+- Implemented `AssetRelevanceFilter` with crypto ticker symbol extraction (`BTC/USDT`, `ETH/USDT`, `SOL/USDT`), title and content weighting, and macro cryptocurrency fallback relevance scoring.
+- Implemented `RuleBasedFinancialSentimentClassifier` with curated cryptocurrency lexicon, contextual negation handling ("not", "never", "failed", "unlikely"), and calibrated softmax output probabilities.
+- Implemented `FinBERTClassifier` with lazy transformer pipeline loading, strict CPU execution fallback, and graceful degradation to rule-based lexicon when optional dependencies are absent.
+- Implemented `ExponentialTimeDecay` computing realistic predictive value evaporation ($t_{1/2} = 2.0\text{h}$, cutoff at $24.0\text{h}$) with future clock-drift protections.
+- Implemented `SentimentAggregator` calculating composite time-decayed and relevance-weighted polarity scores, active news volume counters, stale period tagging, and already-priced-in discounts (50% reduction when asset price has already moved $\ge 5\%$).
+- Implemented `BaseNewsAdapter`, `MockNewsAdapter` for deterministic testing, and `CryptoPanicAdapter` with async `aiohttp` requests, currency filtering, and timeout/error fallbacks.
+- Implemented `SentimentEngine` orchestrator integrating ingestion, deduplication, relevance tagging, NLP scoring, and per-symbol query caching.
+- Created 31 unit tests across 7 test suites achieving 92% sentiment code coverage (295 total project tests passing, 96% overall project coverage).
+- Verified complete zero-error compliance across `ruff check`, `ruff format`, and `mypy` strict type checking across 49 source files.
 
 ---
 

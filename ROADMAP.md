@@ -171,12 +171,12 @@ flowchart TD
 ---
 
 ### Phase 6: Sentiment Analysis Engine
-- [ ] **Phase 6.1**: News and social feed abstraction adapter (RSS/CryptoPanic/Mocked News Provider).
-- [ ] **Phase 6.2**: Deduplication engine using cryptographic content hashing and fuzzy title matching.
-- [ ] **Phase 6.3**: FinBERT sentiment inference pipeline (Bullish, Bearish, Neutral with confidence scores).
-- [ ] **Phase 6.4**: Publication timestamp handling and exponential time-decay weighting.
-- [ ] **Phase 6.5**: Asset relevance tagging and sentiment aggregation index per symbol.
-*Deliverables:* Robust sentiment pipeline with staleness pruning and conservative influence weighting.
+- [x] **Phase 6.1**: News and social feed abstraction adapter (RSS/CryptoPanic/Mocked News Provider).
+- [x] **Phase 6.2**: Deduplication engine using cryptographic content hashing and fuzzy title matching.
+- [x] **Phase 6.3**: FinBERT sentiment inference pipeline (Bullish, Bearish, Neutral with confidence scores).
+- [x] **Phase 6.4**: Publication timestamp handling and exponential time-decay weighting.
+- [x] **Phase 6.5**: Asset relevance tagging and sentiment aggregation index per symbol.
+*Deliverables:* Robust sentiment pipeline with staleness pruning and conservative influence weighting (31 sentiment unit tests, 92% sentiment coverage, 295 total tests passing). **(COMPLETED)**
 
 ---
 

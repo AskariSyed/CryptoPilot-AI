@@ -72,5 +72,5 @@ warn_unused_ignores = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["ccxt.*", "sklearn.*", "joblib.*", "xgboost.*"]
+module = ["ccxt.*", "sklearn.*", "joblib.*", "xgboost.*", "transformers.*"]
 ignore_missing_imports = true
