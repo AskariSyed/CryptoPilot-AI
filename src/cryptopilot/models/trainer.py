@@ -4,6 +4,8 @@ Trains calibrated probabilistic classifiers on cost-adjusted return targets,
 evaluates against naive baselines (PR-AUC, Brier score), and extracts feature importances.
 """
 
+from typing import cast
+
 import numpy as np
 import pandas as pd
 from pydantic import BaseModel, Field
@@ -180,14 +182,14 @@ class XGBoostPredictor:
             return np.full((n_samples, 2), fill_value=0.50)
 
         probs = self.model.predict_proba(X)
-        return probs
+        return cast(np.ndarray, np.asarray(probs, dtype=np.float64))
 
     def predict(self, X: np.ndarray, threshold: float = 0.50) -> np.ndarray:
         """
         Returns binary class predictions using threshold.
         """
         probs = self.predict_proba(X)[:, 1]
-        return (probs >= threshold).astype(int)
+        return cast(np.ndarray, (probs >= threshold).astype(int))
 
     def get_feature_importances(self) -> dict[str, float]:
         """
