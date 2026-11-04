@@ -115,3 +115,4 @@ class TestFeaturePipeline:
                 feat_mutated[col].iloc[:80].to_numpy(),
                 err_msg=f"Lookahead leak detected in feature '{col}' before modified index 80!",
             )
+

@@ -138,3 +138,4 @@ class TestMovingAverages:
         sma = SMA(period=5)
         res = sma.calculate(df)
         assert res.empty
+

@@ -84,3 +84,4 @@ __all__ = [
     "calculate_returns",
     "calculate_log_returns",
 ]
+
