@@ -9,13 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned - Phase 4: Historical Backtesting Engine
-- Event-driven backtester core (`TimeStep`, `EventQueue`, `DataHandler`).
-- Realistic simulated order execution accounting for exchange maker/taker fees, spread, and slippage.
-- Dynamic position tracking, equity curve accounting, and automated stop-loss/take-profit triggers.
-- Performance analytics computation (Net Return, CAGR, Win Rate, Profit Factor, Max Drawdown, Sharpe, Sortino ratios).
-- Benchmark performance comparisons against Buy & Hold BTC/ETH and Cash.
-- Walk-forward validation and out-of-sample data partitioning framework.
+### Planned - Phase 5: Machine Learning Prediction Engine
+- ML target definition (forward return > transaction cost threshold).
+- Chronological time-series cross-validation splitters (Purged and Embargoed walk-forward split).
+- Leak-free feature scaling and transformation pipeline (fitted strictly on training windows).
+- XGBoost classifier/regressor training, hyperparameter tuning, and probability calibration.
+- Feature importance evaluation (SHAP and gain-based) with random baseline benchmarks.
+- Model artifact serialization, versioning, and deterministic inference engine.
+
+---
+
+## [0.1.0-alpha.4] - 2026-11-04
+
+### Added - Phase 4: Historical Backtesting Engine
+- Implemented typed backtest models (`SimulatedOrder`, `SimulatedPosition`, `Trade`, `EquityPoint`, `PerformanceMetrics`, `BenchmarkComparison`, `BacktestResult`).
+- Implemented `SimulatedExecutionEngine` with realistic quadratic volume-dependent slippage, bid/ask half-spread penalties, taker commissions (0.1%), and conservative intrabar bracket order evaluation (Stop-Loss prioritized over Take-Profit on dual-touch candles).
+- Implemented `SimulatedPortfolio` with strict micro-capital constraints ($30 capital, $10 monthly contribution ledger separation from trading PnL, 1% risk budget position sizing, 30% max equity allocation cap, and 2% daily loss circuit breaker).
+- Implemented `PerformanceMetricsCalculator` computing Net Return, CAGR, Win Rate, Profit Factor, Max Drawdown and duration, Sharpe ratio, Sortino ratio, Expectancy, and Fee drag with zero-division protection.
+- Implemented `BenchmarkCalculator` generating passive comparisons against Buy & Hold BTC, Buy & Hold ETH, and risk-free Cash baseline.
+- Implemented `WalkForwardPartitioner` supporting rolling and expanding cross-validation folds with strictly enforced purge and embargo windows to prevent lookahead leakage.
+- Implemented `BacktestEngine` orchestrating zero-lookahead, bar-by-bar event simulation, intrabar bracket resolution, multi-timeframe alignment, and automatic final bar force-close.
+- Built 46 comprehensive unit tests across 7 test suites achieving 98% backtesting line coverage (236 total project tests passing, 97% overall line coverage).
+- Passed all `ruff` linting/formatting and `mypy` strict type checking with zero errors across 33 source files.
 
 ---
 

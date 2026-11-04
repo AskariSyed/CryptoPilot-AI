@@ -149,13 +149,13 @@ flowchart TD
 ---
 
 ### Phase 4: Historical Backtesting Engine
-- [ ] **Phase 4.1**: Event-driven backtester core (TimeStep, EventQueue, DataHandler).
-- [ ] **Phase 4.2**: Simulated order execution model with fees (maker/taker), spread, and variable slippage.
-- [ ] **Phase 4.3**: Position tracking, equity curve accounting, and stop-loss/take-profit triggers.
-- [ ] **Phase 4.4**: Performance analytics calculation (Net Return, CAGR, Win Rate, Profit Factor, Max Drawdown, Sharpe, Sortino).
-- [ ] **Phase 4.5**: Benchmark comparisons (vs Buy & Hold BTC, ETH, and Cash).
-- [ ] **Phase 4.6**: Walk-forward validation and out-of-sample partition tooling.
-*Deliverables:* Complete backtesting harness with detailed equity curve analytics and benchmark reports.
+- [x] **Phase 4.1**: Event-driven backtester core (TimeStep, EventQueue, DataHandler).
+- [x] **Phase 4.2**: Simulated order execution model with fees (maker/taker), spread, and variable slippage.
+- [x] **Phase 4.3**: Position tracking, equity curve accounting, and stop-loss/take-profit triggers.
+- [x] **Phase 4.4**: Performance analytics calculation (Net Return, CAGR, Win Rate, Profit Factor, Max Drawdown, Sharpe, Sortino).
+- [x] **Phase 4.5**: Benchmark comparisons (vs Buy & Hold BTC, ETH, and Cash).
+- [x] **Phase 4.6**: Walk-forward validation and out-of-sample partition tooling.
+*Deliverables:* Complete backtesting harness with detailed equity curve analytics and benchmark reports (46 backtesting unit tests, 98% backtesting coverage, 236 total tests passing). **(COMPLETED)**
 
 ---
 
