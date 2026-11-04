@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 from datetime import UTC, datetime
 from enum import StrEnum
 from typing import Any
+
 import pandas as pd
 from pydantic import BaseModel, Field, field_validator
 

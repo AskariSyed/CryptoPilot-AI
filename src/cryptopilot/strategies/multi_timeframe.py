@@ -6,6 +6,7 @@ Eliminates low-timeframe noise by ensuring trade direction aligns with macro ord
 
 from datetime import UTC, datetime
 from typing import Any
+
 import numpy as np
 import pandas as pd
 
@@ -54,12 +55,20 @@ class MultiTimeframeTrendStrategy(BaseStrategy):
         valid_micro, err_micro = self.validate_dataframe(df_micro)
 
         if not valid_micro:
-            price = float(df_micro["close"].iloc[-1]) if df_micro is not None and not df_micro.empty else 0.0
-            return self.create_hold_signal(symbol, price, f"Micro data validation failed: {err_micro}")
+            price = (
+                float(df_micro["close"].iloc[-1])
+                if df_micro is not None and not df_micro.empty
+                else 0.0
+            )
+            return self.create_hold_signal(
+                symbol, price, f"Micro data validation failed: {err_micro}"
+            )
 
         if not valid_macro:
             price = float(df_micro["close"].iloc[-1])
-            return self.create_hold_signal(symbol, price, f"Macro data validation failed: {err_macro}")
+            return self.create_hold_signal(
+                symbol, price, f"Macro data validation failed: {err_macro}"
+            )
 
         # 1. Macro (1h) Indicators
         macro_close = df_macro["close"]
@@ -84,9 +93,7 @@ class MultiTimeframeTrendStrategy(BaseStrategy):
 
         micro_p = float(micro_close.iloc[t])
         timestamp = (
-            df_micro["timestamp"].iloc[t]
-            if "timestamp" in df_micro.columns
-            else datetime.now(UTC)
+            df_micro["timestamp"].iloc[t] if "timestamp" in df_micro.columns else datetime.now(UTC)
         )
         if hasattr(timestamp, "to_pydatetime"):
             timestamp = timestamp.to_pydatetime()
@@ -119,7 +126,11 @@ class MultiTimeframeTrendStrategy(BaseStrategy):
 
         if any(np.isnan(v) for v in metrics.values()):
             return self.create_hold_signal(
-                symbol, micro_p, "Indicator calculation produced NaNs (warmup incomplete)", metrics, timestamp
+                symbol,
+                micro_p,
+                "Indicator calculation produced NaNs (warmup incomplete)",
+                metrics,
+                timestamp,
             )
 
         # 3. Evaluate BUY Conditions
@@ -132,7 +143,13 @@ class MultiTimeframeTrendStrategy(BaseStrategy):
         # Condition D: Volume above average
         volume_confirmed = m_vol_val > (0.90 * m_vol_ma_val)
 
-        if macro_bullish and recent_pullback_rsi and near_ema and bullish_candle and volume_confirmed:
+        if (
+            macro_bullish
+            and recent_pullback_rsi
+            and near_ema
+            and bullish_candle
+            and volume_confirmed
+        ):
             swing_low_3 = float(micro_low.iloc[t - 2 : t + 1].min())
             stop_loss = swing_low_3 - (0.5 * m_atr_val)
             if stop_loss >= micro_p or stop_loss <= 0.0:
@@ -141,7 +158,9 @@ class MultiTimeframeTrendStrategy(BaseStrategy):
             take_profit = micro_p + (2.5 * (micro_p - stop_loss))
 
             # Confidence scoring
-            macro_strength = min(1.0, max(0.0, (macro_p - macro_ema_val) / max(1.0, macro_ema_val * 0.05)))
+            macro_strength = min(
+                1.0, max(0.0, (macro_p - macro_ema_val) / max(1.0, macro_ema_val * 0.05))
+            )
             vol_boost = 0.15 if m_vol_val > m_vol_ma_val else 0.05
             confidence = float(np.clip(0.70 + (0.15 * macro_strength) + vol_boost, 0.70, 0.95))
 
@@ -165,7 +184,9 @@ class MultiTimeframeTrendStrategy(BaseStrategy):
 
         # 4. Evaluate SELL Conditions
         # Macro reversed bearish OR Micro closed decisively below EMA 20 in bearish macro
-        if macro_bearish or (micro_p < m_ema_val and float(micro_close.iloc[t - 1]) < float(micro_ema.iloc[t - 1])):
+        if macro_bearish or (
+            micro_p < m_ema_val and float(micro_close.iloc[t - 1]) < float(micro_ema.iloc[t - 1])
+        ):
             confidence = 0.80 if macro_bearish else 0.65
             return StrategySignal(
                 strategy_id=self.strategy_id,

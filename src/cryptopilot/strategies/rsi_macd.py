@@ -6,6 +6,7 @@ RSI bullish non-overbought zone (50-70), and volume confirmation.
 
 from datetime import UTC, datetime
 from typing import Any
+
 import numpy as np
 import pandas as pd
 
@@ -57,11 +58,7 @@ class RSIMACDConfirmationStrategy(BaseStrategy):
         t = len(df) - 1
 
         curr_price = float(close.iloc[t])
-        timestamp = (
-            df["timestamp"].iloc[t]
-            if "timestamp" in df.columns
-            else datetime.now(UTC)
-        )
+        timestamp = df["timestamp"].iloc[t] if "timestamp" in df.columns else datetime.now(UTC)
         if hasattr(timestamp, "to_pydatetime"):
             timestamp = timestamp.to_pydatetime()
         if timestamp.tzinfo is None:
@@ -99,7 +96,11 @@ class RSIMACDConfirmationStrategy(BaseStrategy):
 
         if any(np.isnan(v) for v in metrics.values()):
             return self.create_hold_signal(
-                symbol, curr_price, "Indicator calculation produced NaNs (warmup incomplete)", metrics, timestamp
+                symbol,
+                curr_price,
+                "Indicator calculation produced NaNs (warmup incomplete)",
+                metrics,
+                timestamp,
             )
 
         # 2. Evaluate BUY Conditions
@@ -122,7 +123,9 @@ class RSIMACDConfirmationStrategy(BaseStrategy):
             # Confidence formula
             rsi_sweet_spot = max(0.0, min(1.0, (70.0 - rsi_curr) / 20.0))
             hist_strength = min(1.0, max(0.0, hist_curr / (atr_curr if atr_curr > 0 else 1.0)))
-            confidence = float(np.clip(0.55 + (0.20 * rsi_sweet_spot) + (0.20 * hist_strength), 0.55, 0.95))
+            confidence = float(
+                np.clip(0.55 + (0.20 * rsi_sweet_spot) + (0.20 * hist_strength), 0.55, 0.95)
+            )
 
             return StrategySignal(
                 strategy_id=self.strategy_id,
@@ -144,7 +147,9 @@ class RSIMACDConfirmationStrategy(BaseStrategy):
 
         # 3. Evaluate SELL Conditions
         # MACD histogram negative for 2 consecutive bars OR RSI > 75 overbought exhaustion
-        hist_negative_2 = (hist_curr < 0.0) and (hist_prev < 0.0) and (hist_prev2 >= 0.0 or curr_price < ema_val)
+        hist_negative_2 = (
+            (hist_curr < 0.0) and (hist_prev < 0.0) and (hist_prev2 >= 0.0 or curr_price < ema_val)
+        )
         overbought_exhaustion = rsi_curr > 75.0
 
         if hist_negative_2 or overbought_exhaustion:
@@ -163,7 +168,7 @@ class RSIMACDConfirmationStrategy(BaseStrategy):
                 suggested_stop_loss=curr_price * 1.02,
                 suggested_take_profit=None,
                 rationale=rationale_text,
-                invalidation_condition=f"RSI rebounds above 60 with positive MACD histogram",
+                invalidation_condition="RSI rebounds above 60 with positive MACD histogram",
                 timestamp=timestamp,
                 metrics=metrics,
             )

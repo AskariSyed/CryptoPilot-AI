@@ -3,11 +3,10 @@ Unit tests for cryptopilot.strategies.bollinger_reversion.BollingerMeanReversion
 Covers: Strategy C BUY, SELL, HOLD, strict ADX regime filtering, and stop-loss logic.
 """
 
-from datetime import UTC, datetime, timedelta
 from unittest.mock import patch
+
 import numpy as np
 import pandas as pd
-import pytest
 
 from cryptopilot.strategies.base import SignalType
 from cryptopilot.strategies.bollinger_reversion import BollingerMeanReversionStrategy
@@ -38,10 +37,21 @@ class TestBollingerMeanReversionStrategy:
         adx_s = pd.Series([15.0] * n)  # Ranging regime < 20
         atr_s = pd.Series([2.0] * n)
 
-        with patch("cryptopilot.strategies.bollinger_reversion.calculate_bollinger_bands", return_value=(upper_s, middle_s, lower_s, bw_s, pct_b_s)):
-            with patch("cryptopilot.strategies.bollinger_reversion.calculate_rsi", return_value=rsi_s):
-                with patch("cryptopilot.strategies.bollinger_reversion.calculate_adx", return_value=(adx_s, adx_s, adx_s)):
-                    with patch("cryptopilot.strategies.bollinger_reversion.calculate_atr", return_value=atr_s):
+        with patch(
+            "cryptopilot.strategies.bollinger_reversion.calculate_bollinger_bands",
+            return_value=(upper_s, middle_s, lower_s, bw_s, pct_b_s),
+        ):
+            with patch(
+                "cryptopilot.strategies.bollinger_reversion.calculate_rsi", return_value=rsi_s
+            ):
+                with patch(
+                    "cryptopilot.strategies.bollinger_reversion.calculate_adx",
+                    return_value=(adx_s, adx_s, adx_s),
+                ):
+                    with patch(
+                        "cryptopilot.strategies.bollinger_reversion.calculate_atr",
+                        return_value=atr_s,
+                    ):
                         signal = strategy.evaluate(df, "BTC/USDT")
                         assert signal.signal == SignalType.BUY
                         assert signal.confidence >= 0.50
@@ -73,10 +83,21 @@ class TestBollingerMeanReversionStrategy:
         adx_s = pd.Series([28.0] * n)  # ADX 28 >= 20 (trending)
         atr_s = pd.Series([2.0] * n)
 
-        with patch("cryptopilot.strategies.bollinger_reversion.calculate_bollinger_bands", return_value=(upper_s, middle_s, lower_s, bw_s, pct_b_s)):
-            with patch("cryptopilot.strategies.bollinger_reversion.calculate_rsi", return_value=rsi_s):
-                with patch("cryptopilot.strategies.bollinger_reversion.calculate_adx", return_value=(adx_s, adx_s, adx_s)):
-                    with patch("cryptopilot.strategies.bollinger_reversion.calculate_atr", return_value=atr_s):
+        with patch(
+            "cryptopilot.strategies.bollinger_reversion.calculate_bollinger_bands",
+            return_value=(upper_s, middle_s, lower_s, bw_s, pct_b_s),
+        ):
+            with patch(
+                "cryptopilot.strategies.bollinger_reversion.calculate_rsi", return_value=rsi_s
+            ):
+                with patch(
+                    "cryptopilot.strategies.bollinger_reversion.calculate_adx",
+                    return_value=(adx_s, adx_s, adx_s),
+                ):
+                    with patch(
+                        "cryptopilot.strategies.bollinger_reversion.calculate_atr",
+                        return_value=atr_s,
+                    ):
                         signal = strategy.evaluate(df, "ETH/USDT")
                         assert signal.signal == SignalType.HOLD
                         assert "Regime filter: Market is trending" in signal.rationale
@@ -104,10 +125,21 @@ class TestBollingerMeanReversionStrategy:
         adx_s = pd.Series([15.0] * n)
         atr_s = pd.Series([2.0] * n)
 
-        with patch("cryptopilot.strategies.bollinger_reversion.calculate_bollinger_bands", return_value=(upper_s, middle_s, lower_s, bw_s, pct_b_s)):
-            with patch("cryptopilot.strategies.bollinger_reversion.calculate_rsi", return_value=rsi_s):
-                with patch("cryptopilot.strategies.bollinger_reversion.calculate_adx", return_value=(adx_s, adx_s, adx_s)):
-                    with patch("cryptopilot.strategies.bollinger_reversion.calculate_atr", return_value=atr_s):
+        with patch(
+            "cryptopilot.strategies.bollinger_reversion.calculate_bollinger_bands",
+            return_value=(upper_s, middle_s, lower_s, bw_s, pct_b_s),
+        ):
+            with patch(
+                "cryptopilot.strategies.bollinger_reversion.calculate_rsi", return_value=rsi_s
+            ):
+                with patch(
+                    "cryptopilot.strategies.bollinger_reversion.calculate_adx",
+                    return_value=(adx_s, adx_s, adx_s),
+                ):
+                    with patch(
+                        "cryptopilot.strategies.bollinger_reversion.calculate_atr",
+                        return_value=atr_s,
+                    ):
                         signal = strategy.evaluate(df, "SOL/USDT")
                         assert signal.signal == SignalType.SELL
                         assert "Mean reversion exit" in signal.rationale
@@ -126,10 +158,21 @@ class TestBollingerMeanReversionStrategy:
         strategy = BollingerMeanReversionStrategy(bb_period=10, adx_period=10)
         nan_s = pd.Series([np.nan] * n)
 
-        with patch("cryptopilot.strategies.bollinger_reversion.calculate_bollinger_bands", return_value=(nan_s, nan_s, nan_s, nan_s, nan_s)):
-            with patch("cryptopilot.strategies.bollinger_reversion.calculate_rsi", return_value=nan_s):
-                with patch("cryptopilot.strategies.bollinger_reversion.calculate_adx", return_value=(nan_s, nan_s, nan_s)):
-                    with patch("cryptopilot.strategies.bollinger_reversion.calculate_atr", return_value=nan_s):
+        with patch(
+            "cryptopilot.strategies.bollinger_reversion.calculate_bollinger_bands",
+            return_value=(nan_s, nan_s, nan_s, nan_s, nan_s),
+        ):
+            with patch(
+                "cryptopilot.strategies.bollinger_reversion.calculate_rsi", return_value=nan_s
+            ):
+                with patch(
+                    "cryptopilot.strategies.bollinger_reversion.calculate_adx",
+                    return_value=(nan_s, nan_s, nan_s),
+                ):
+                    with patch(
+                        "cryptopilot.strategies.bollinger_reversion.calculate_atr",
+                        return_value=nan_s,
+                    ):
                         signal = strategy.evaluate(df, "BTC/USDT")
                         assert signal.signal == SignalType.HOLD
                         assert "warmup incomplete" in signal.rationale
@@ -172,10 +215,21 @@ class TestBollingerMeanReversionStrategy:
         adx_s = pd.Series([15.0] * n)  # Ranging
         atr_s = pd.Series([2.0] * n)
 
-        with patch("cryptopilot.strategies.bollinger_reversion.calculate_bollinger_bands", return_value=(upper_s, middle_s, lower_s, bw_s, pct_b_s)):
-            with patch("cryptopilot.strategies.bollinger_reversion.calculate_rsi", return_value=rsi_s):
-                with patch("cryptopilot.strategies.bollinger_reversion.calculate_adx", return_value=(adx_s, adx_s, adx_s)):
-                    with patch("cryptopilot.strategies.bollinger_reversion.calculate_atr", return_value=atr_s):
+        with patch(
+            "cryptopilot.strategies.bollinger_reversion.calculate_bollinger_bands",
+            return_value=(upper_s, middle_s, lower_s, bw_s, pct_b_s),
+        ):
+            with patch(
+                "cryptopilot.strategies.bollinger_reversion.calculate_rsi", return_value=rsi_s
+            ):
+                with patch(
+                    "cryptopilot.strategies.bollinger_reversion.calculate_adx",
+                    return_value=(adx_s, adx_s, adx_s),
+                ):
+                    with patch(
+                        "cryptopilot.strategies.bollinger_reversion.calculate_atr",
+                        return_value=atr_s,
+                    ):
                         signal = strategy.evaluate(df, "BTC/USDT")
                         assert signal.signal == SignalType.HOLD
                         assert "No setup" in signal.rationale

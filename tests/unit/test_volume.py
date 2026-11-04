@@ -98,4 +98,3 @@ class TestVolumeIndicators:
             OBV().calculate(df_bad)
         with pytest.raises(InvalidInputError):
             VWAP().calculate(df_bad)
-

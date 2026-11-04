@@ -5,6 +5,7 @@ Covers: Strategy A BUY, SELL, HOLD branches, and risk stop calculations.
 
 from datetime import UTC, datetime, timedelta
 from unittest.mock import patch
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -61,8 +62,12 @@ class TestEMATrendFollowingStrategy:
         adx_s = pd.Series([20.0] * 27 + [26.0, 28.0, 30.0])  # Rising > 25
         atr_s = pd.Series([2.0] * 30)
 
-        with patch("cryptopilot.strategies.ema_trend.calculate_ema", side_effect=[fast_s, slow_s, base_s]):
-            with patch("cryptopilot.strategies.ema_trend.calculate_adx", return_value=(adx_s, adx_s, adx_s)):
+        with patch(
+            "cryptopilot.strategies.ema_trend.calculate_ema", side_effect=[fast_s, slow_s, base_s]
+        ):
+            with patch(
+                "cryptopilot.strategies.ema_trend.calculate_adx", return_value=(adx_s, adx_s, adx_s)
+            ):
                 with patch("cryptopilot.strategies.ema_trend.calculate_atr", return_value=atr_s):
                     signal = strategy.evaluate(df, "BTC/USDT")
                     assert signal.signal == SignalType.BUY
@@ -90,8 +95,12 @@ class TestEMATrendFollowingStrategy:
         adx_s = pd.Series([30.0] * 30)
         atr_s = pd.Series([2.0] * 30)
 
-        with patch("cryptopilot.strategies.ema_trend.calculate_ema", side_effect=[fast_s, slow_s, base_s]):
-            with patch("cryptopilot.strategies.ema_trend.calculate_adx", return_value=(adx_s, adx_s, adx_s)):
+        with patch(
+            "cryptopilot.strategies.ema_trend.calculate_ema", side_effect=[fast_s, slow_s, base_s]
+        ):
+            with patch(
+                "cryptopilot.strategies.ema_trend.calculate_adx", return_value=(adx_s, adx_s, adx_s)
+            ):
                 with patch("cryptopilot.strategies.ema_trend.calculate_atr", return_value=atr_s):
                     signal = strategy.evaluate(df, "ETH/USDT")
                     assert signal.signal == SignalType.SELL
@@ -116,8 +125,12 @@ class TestEMATrendFollowingStrategy:
         adx_s = pd.Series([15.0] * 30)  # Low ADX
         atr_s = pd.Series([2.0] * 30)
 
-        with patch("cryptopilot.strategies.ema_trend.calculate_ema", side_effect=[fast_s, slow_s, base_s]):
-            with patch("cryptopilot.strategies.ema_trend.calculate_adx", return_value=(adx_s, adx_s, adx_s)):
+        with patch(
+            "cryptopilot.strategies.ema_trend.calculate_ema", side_effect=[fast_s, slow_s, base_s]
+        ):
+            with patch(
+                "cryptopilot.strategies.ema_trend.calculate_adx", return_value=(adx_s, adx_s, adx_s)
+            ):
                 with patch("cryptopilot.strategies.ema_trend.calculate_atr", return_value=atr_s):
                     signal = strategy.evaluate(df, "BTC/USDT")
                     assert signal.signal == SignalType.HOLD
@@ -138,7 +151,9 @@ class TestEMATrendFollowingStrategy:
 
         nan_s = pd.Series([np.nan] * 30)
         with patch("cryptopilot.strategies.ema_trend.calculate_ema", return_value=nan_s):
-            with patch("cryptopilot.strategies.ema_trend.calculate_adx", return_value=(nan_s, nan_s, nan_s)):
+            with patch(
+                "cryptopilot.strategies.ema_trend.calculate_adx", return_value=(nan_s, nan_s, nan_s)
+            ):
                 with patch("cryptopilot.strategies.ema_trend.calculate_atr", return_value=nan_s):
                     signal = strategy.evaluate(df, "BTC/USDT")
                     assert signal.signal == SignalType.HOLD

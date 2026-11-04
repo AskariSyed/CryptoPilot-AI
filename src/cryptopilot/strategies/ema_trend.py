@@ -6,6 +6,7 @@ and ATR-based dynamic stop-loss positioning.
 
 from datetime import UTC, datetime
 from typing import Any
+
 import numpy as np
 import pandas as pd
 
@@ -53,11 +54,7 @@ class EMATrendFollowingStrategy(BaseStrategy):
         t = len(df) - 1
 
         curr_price = float(close.iloc[t])
-        timestamp = (
-            df["timestamp"].iloc[t]
-            if "timestamp" in df.columns
-            else datetime.now(UTC)
-        )
+        timestamp = df["timestamp"].iloc[t] if "timestamp" in df.columns else datetime.now(UTC)
         if hasattr(timestamp, "to_pydatetime"):
             timestamp = timestamp.to_pydatetime()
         if timestamp.tzinfo is None:
@@ -91,14 +88,20 @@ class EMATrendFollowingStrategy(BaseStrategy):
         # Check for invalid/NaN values in indicators
         if any(np.isnan(v) for v in metrics.values()):
             return self.create_hold_signal(
-                symbol, curr_price, "Indicator calculation produced NaNs (warmup incomplete)", metrics, timestamp
+                symbol,
+                curr_price,
+                "Indicator calculation produced NaNs (warmup incomplete)",
+                metrics,
+                timestamp,
             )
 
         # 2. Evaluate BUY Entry Conditions
         # Condition 1: Macro bull regime (Price > EMA 200)
         macro_bull = curr_price > base_curr
         # Condition 2: Fast crosses above slow (or recent crossover within 2 bars with fast > slow)
-        bullish_cross = (f_curr > s_curr) and ((f_prev <= s_prev) or (float(ema_fast.iloc[t - 2]) <= float(ema_slow.iloc[t - 2])))
+        bullish_cross = (f_curr > s_curr) and (
+            (f_prev <= s_prev) or (float(ema_fast.iloc[t - 2]) <= float(ema_slow.iloc[t - 2]))
+        )
         # Condition 3: ADX >= min_adx
         strong_trend = adx_curr >= self.min_adx
         # Condition 4: ADX rising
@@ -118,8 +121,12 @@ class EMATrendFollowingStrategy(BaseStrategy):
 
             # Confidence Formula
             adx_factor = min(1.0, max(0.0, (adx_curr - self.min_adx) / self.min_adx))
-            dist_factor = min(1.0, max(0.0, (f_curr - s_curr) / (atr_curr if atr_curr > 0 else 1.0)))
-            confidence = float(np.clip(0.50 + (0.25 * adx_factor) + (0.25 * dist_factor), 0.50, 0.95))
+            dist_factor = min(
+                1.0, max(0.0, (f_curr - s_curr) / (atr_curr if atr_curr > 0 else 1.0))
+            )
+            confidence = float(
+                np.clip(0.50 + (0.25 * adx_factor) + (0.25 * dist_factor), 0.50, 0.95)
+            )
 
             return StrategySignal(
                 strategy_id=self.strategy_id,

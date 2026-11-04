@@ -3,11 +3,10 @@ Unit tests for cryptopilot.strategies.multi_timeframe.MultiTimeframeTrendStrateg
 Covers: Strategy E Macro 1h + Micro 15m evaluation, pullback & resumption, and sell exits.
 """
 
-from datetime import UTC, datetime, timedelta
 from unittest.mock import patch
+
 import numpy as np
 import pandas as pd
-import pytest
 
 from cryptopilot.strategies.base import SignalType
 from cryptopilot.strategies.multi_timeframe import MultiTimeframeTrendStrategy
@@ -47,11 +46,25 @@ class TestMultiTimeframeTrendStrategy:
         micro_atr = pd.Series([2.0] * n)
         micro_vol_ma = pd.Series([300.0] * n)  # Vol 500 > Vol MA 300
 
-        with patch("cryptopilot.strategies.multi_timeframe.calculate_ema", side_effect=[macro_ema, micro_ema]):
-            with patch("cryptopilot.strategies.multi_timeframe.calculate_macd", return_value=(macro_macd, macro_macd, macro_macd)):
-                with patch("cryptopilot.strategies.multi_timeframe.calculate_rsi", return_value=micro_rsi):
-                    with patch("cryptopilot.strategies.multi_timeframe.calculate_atr", return_value=micro_atr):
-                        with patch("cryptopilot.strategies.multi_timeframe.calculate_volume_ma", return_value=micro_vol_ma):
+        with patch(
+            "cryptopilot.strategies.multi_timeframe.calculate_ema",
+            side_effect=[macro_ema, micro_ema],
+        ):
+            with patch(
+                "cryptopilot.strategies.multi_timeframe.calculate_macd",
+                return_value=(macro_macd, macro_macd, macro_macd),
+            ):
+                with patch(
+                    "cryptopilot.strategies.multi_timeframe.calculate_rsi", return_value=micro_rsi
+                ):
+                    with patch(
+                        "cryptopilot.strategies.multi_timeframe.calculate_atr",
+                        return_value=micro_atr,
+                    ):
+                        with patch(
+                            "cryptopilot.strategies.multi_timeframe.calculate_volume_ma",
+                            return_value=micro_vol_ma,
+                        ):
                             signal = strategy.evaluate_multi(df_macro, df_micro, "BTC/USDT")
                             assert signal.signal == SignalType.BUY
                             assert signal.confidence >= 0.70
@@ -87,11 +100,25 @@ class TestMultiTimeframeTrendStrategy:
         micro_atr = pd.Series([2.0] * n)
         micro_vol_ma = pd.Series([300.0] * n)
 
-        with patch("cryptopilot.strategies.multi_timeframe.calculate_ema", side_effect=[macro_ema, micro_ema]):
-            with patch("cryptopilot.strategies.multi_timeframe.calculate_macd", return_value=(macro_macd, macro_macd, macro_macd)):
-                with patch("cryptopilot.strategies.multi_timeframe.calculate_rsi", return_value=micro_rsi):
-                    with patch("cryptopilot.strategies.multi_timeframe.calculate_atr", return_value=micro_atr):
-                        with patch("cryptopilot.strategies.multi_timeframe.calculate_volume_ma", return_value=micro_vol_ma):
+        with patch(
+            "cryptopilot.strategies.multi_timeframe.calculate_ema",
+            side_effect=[macro_ema, micro_ema],
+        ):
+            with patch(
+                "cryptopilot.strategies.multi_timeframe.calculate_macd",
+                return_value=(macro_macd, macro_macd, macro_macd),
+            ):
+                with patch(
+                    "cryptopilot.strategies.multi_timeframe.calculate_rsi", return_value=micro_rsi
+                ):
+                    with patch(
+                        "cryptopilot.strategies.multi_timeframe.calculate_atr",
+                        return_value=micro_atr,
+                    ):
+                        with patch(
+                            "cryptopilot.strategies.multi_timeframe.calculate_volume_ma",
+                            return_value=micro_vol_ma,
+                        ):
                             signal = strategy.evaluate_multi(df_macro, df_micro, "BTC/USDT")
                             assert signal.signal == SignalType.SELL
                             assert "turned bearish" in signal.rationale
@@ -111,10 +138,20 @@ class TestMultiTimeframeTrendStrategy:
         nan_s = pd.Series([np.nan] * n)
 
         with patch("cryptopilot.strategies.multi_timeframe.calculate_ema", return_value=nan_s):
-            with patch("cryptopilot.strategies.multi_timeframe.calculate_macd", return_value=(nan_s, nan_s, nan_s)):
-                with patch("cryptopilot.strategies.multi_timeframe.calculate_rsi", return_value=nan_s):
-                    with patch("cryptopilot.strategies.multi_timeframe.calculate_atr", return_value=nan_s):
-                        with patch("cryptopilot.strategies.multi_timeframe.calculate_volume_ma", return_value=nan_s):
+            with patch(
+                "cryptopilot.strategies.multi_timeframe.calculate_macd",
+                return_value=(nan_s, nan_s, nan_s),
+            ):
+                with patch(
+                    "cryptopilot.strategies.multi_timeframe.calculate_rsi", return_value=nan_s
+                ):
+                    with patch(
+                        "cryptopilot.strategies.multi_timeframe.calculate_atr", return_value=nan_s
+                    ):
+                        with patch(
+                            "cryptopilot.strategies.multi_timeframe.calculate_volume_ma",
+                            return_value=nan_s,
+                        ):
                             signal = strategy.evaluate_multi(df, df, "BTC/USDT")
                             assert signal.signal == SignalType.HOLD
                             assert "warmup incomplete" in signal.rationale

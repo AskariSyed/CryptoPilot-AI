@@ -112,4 +112,3 @@ class TestMomentum:
         stoch_ind = StochasticOscillator(k_period=14, d_period=3)
         with pytest.raises(InvalidInputError):
             stoch_ind.calculate(df_bad)
-

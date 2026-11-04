@@ -6,6 +6,7 @@ Enforces regime filters to prevent catching falling knives in trending breakdown
 
 from datetime import UTC, datetime
 from typing import Any
+
 import numpy as np
 import pandas as pd
 
@@ -58,11 +59,7 @@ class BollingerMeanReversionStrategy(BaseStrategy):
         t = len(df) - 1
 
         curr_price = float(close.iloc[t])
-        timestamp = (
-            df["timestamp"].iloc[t]
-            if "timestamp" in df.columns
-            else datetime.now(UTC)
-        )
+        timestamp = df["timestamp"].iloc[t] if "timestamp" in df.columns else datetime.now(UTC)
         if hasattr(timestamp, "to_pydatetime"):
             timestamp = timestamp.to_pydatetime()
         if timestamp.tzinfo is None:
@@ -97,7 +94,11 @@ class BollingerMeanReversionStrategy(BaseStrategy):
 
         if any(np.isnan(v) for v in metrics.values()):
             return self.create_hold_signal(
-                symbol, curr_price, "Indicator calculation produced NaNs (warmup incomplete)", metrics, timestamp
+                symbol,
+                curr_price,
+                "Indicator calculation produced NaNs (warmup incomplete)",
+                metrics,
+                timestamp,
             )
 
         # 2. Strict Regime Filter: ADX < max_adx_regime (only ranging markets allowed)
@@ -116,7 +117,9 @@ class BollingerMeanReversionStrategy(BaseStrategy):
         # Condition 2: Bullish candle close (Close > Open)
         bullish_close = curr_price > float(open_p.iloc[t])
         # Condition 3: RSI oversold recovery (RSI > 35 and RSI_prev <= 35 or RSI < 40)
-        rsi_rebound = (rsi_curr > 35.0 and rsi_prev <= 35.0) or (30.0 <= rsi_curr <= 42.0 and rsi_curr > rsi_prev)
+        rsi_rebound = (rsi_curr > 35.0 and rsi_prev <= 35.0) or (
+            30.0 <= rsi_curr <= 42.0 and rsi_curr > rsi_prev
+        )
 
         if touched_lower and bullish_close and rsi_rebound:
             stop_loss = bb_low - (0.5 * atr_curr)
@@ -167,7 +170,7 @@ class BollingerMeanReversionStrategy(BaseStrategy):
                     f"Mean reversion exit: Price reached target band ({bb_mid:.2f}) or "
                     f"RSI reached overbought territory ({rsi_curr:.1f} >= 65)."
                 ),
-                invalidation_condition=f"Price drops back below lower band",
+                invalidation_condition="Price drops back below lower band",
                 timestamp=timestamp,
                 metrics=metrics,
             )
@@ -181,5 +184,7 @@ class BollingerMeanReversionStrategy(BaseStrategy):
         if not rsi_rebound:
             reasons.append(f"RSI ({rsi_curr:.1f}) not rebounding from oversold")
 
-        reason_str = "No setup: " + (", ".join(reasons) if reasons else "Consolidating within bands")
+        reason_str = "No setup: " + (
+            ", ".join(reasons) if reasons else "Consolidating within bands"
+        )
         return self.create_hold_signal(symbol, curr_price, reason_str, metrics, timestamp)

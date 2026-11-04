@@ -137,14 +137,14 @@ flowchart TD
 ---
 
 ### Phase 3: Trading Strategy Development
-- [ ] **Phase 3.1**: Strategy interface & signal schema (`BUY`, `SELL`, `HOLD`, confidence, rationale, invalidation).
-- [ ] **Phase 3.2**: Strategy A: EMA Trend Following (fast/slow cross with trend confirmation).
-- [ ] **Phase 3.3**: Strategy B: RSI & MACD Multi-Condition Momentum.
-- [ ] **Phase 3.4**: Strategy C: Bollinger Band Volatility Mean Reversion.
-- [ ] **Phase 3.5**: Strategy D: Volatility-Adjusted Momentum (ATR-scaled trend capture).
-- [ ] **Phase 3.6**: Strategy E: Multi-Timeframe Trend Confirmation (1h macro regime + 15m entry).
-- [ ] **Phase 3.7**: Unit tests for all strategy signal generations, edge cases, and confidence calculations.
-*Deliverables:* Five battle-tested rule strategies with explicit rationales and edge-case validation.
+- [x] **Phase 3.1**: Strategy interface & signal schema (`BUY`, `SELL`, `HOLD`, confidence, rationale, invalidation).
+- [x] **Phase 3.2**: Strategy A: EMA Trend Following (fast/slow cross with trend confirmation).
+- [x] **Phase 3.3**: Strategy B: RSI & MACD Multi-Condition Momentum.
+- [x] **Phase 3.4**: Strategy C: Bollinger Band Volatility Mean Reversion.
+- [x] **Phase 3.5**: Strategy D: Volatility-Adjusted Momentum (ATR-scaled trend capture).
+- [x] **Phase 3.6**: Strategy E: Multi-Timeframe Trend Confirmation (1h macro regime + 15m entry).
+- [x] **Phase 3.7**: Unit tests for all strategy signal generations, edge cases, and confidence calculations.
+*Deliverables:* Five battle-tested rule strategies with explicit rationales and edge-case validation (39 strategy tests, 97% strategy coverage, 190 total tests passing). **(COMPLETED)**
 
 ---
 

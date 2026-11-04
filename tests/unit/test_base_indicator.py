@@ -55,4 +55,3 @@ class TestBaseIndicator:
         df = pd.DataFrame(columns=["close"])
         # Should not raise for empty DataFrame
         ind.validate_input(df, ["close"])
-

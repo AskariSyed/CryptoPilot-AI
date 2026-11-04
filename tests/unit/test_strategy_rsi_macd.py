@@ -3,11 +3,10 @@ Unit tests for cryptopilot.strategies.rsi_macd.RSIMACDConfirmationStrategy.
 Covers: Strategy B BUY, SELL, HOLD, overbought filtering, and stop-loss logic.
 """
 
-from datetime import UTC, datetime, timedelta
 from unittest.mock import patch
+
 import numpy as np
 import pandas as pd
-import pytest
 
 from cryptopilot.strategies.base import SignalType
 from cryptopilot.strategies.rsi_macd import RSIMACDConfirmationStrategy
@@ -37,10 +36,17 @@ class TestRSIMACDConfirmationStrategy:
         atr_s = pd.Series([2.0] * n)
 
         with patch("cryptopilot.strategies.rsi_macd.calculate_ema", return_value=ema_s):
-            with patch("cryptopilot.strategies.rsi_macd.calculate_macd", return_value=(macd_l, macd_sig, hist_s)):
+            with patch(
+                "cryptopilot.strategies.rsi_macd.calculate_macd",
+                return_value=(macd_l, macd_sig, hist_s),
+            ):
                 with patch("cryptopilot.strategies.rsi_macd.calculate_rsi", return_value=rsi_s):
-                    with patch("cryptopilot.strategies.rsi_macd.calculate_volume_ma", return_value=vol_ma_s):
-                        with patch("cryptopilot.strategies.rsi_macd.calculate_atr", return_value=atr_s):
+                    with patch(
+                        "cryptopilot.strategies.rsi_macd.calculate_volume_ma", return_value=vol_ma_s
+                    ):
+                        with patch(
+                            "cryptopilot.strategies.rsi_macd.calculate_atr", return_value=atr_s
+                        ):
                             signal = strategy.evaluate(df, "BTC/USDT")
                             assert signal.signal == SignalType.BUY
                             assert signal.confidence >= 0.55
@@ -70,10 +76,17 @@ class TestRSIMACDConfirmationStrategy:
         atr_s = pd.Series([2.0] * n)
 
         with patch("cryptopilot.strategies.rsi_macd.calculate_ema", return_value=ema_s):
-            with patch("cryptopilot.strategies.rsi_macd.calculate_macd", return_value=(macd_l, macd_sig, hist_s)):
+            with patch(
+                "cryptopilot.strategies.rsi_macd.calculate_macd",
+                return_value=(macd_l, macd_sig, hist_s),
+            ):
                 with patch("cryptopilot.strategies.rsi_macd.calculate_rsi", return_value=rsi_s):
-                    with patch("cryptopilot.strategies.rsi_macd.calculate_volume_ma", return_value=vol_ma_s):
-                        with patch("cryptopilot.strategies.rsi_macd.calculate_atr", return_value=atr_s):
+                    with patch(
+                        "cryptopilot.strategies.rsi_macd.calculate_volume_ma", return_value=vol_ma_s
+                    ):
+                        with patch(
+                            "cryptopilot.strategies.rsi_macd.calculate_atr", return_value=atr_s
+                        ):
                             signal = strategy.evaluate(df, "ETH/USDT")
                             assert signal.signal == SignalType.SELL
                             assert "negative" in signal.rationale.lower()
@@ -100,10 +113,17 @@ class TestRSIMACDConfirmationStrategy:
         atr_s = pd.Series([2.0] * n)
 
         with patch("cryptopilot.strategies.rsi_macd.calculate_ema", return_value=ema_s):
-            with patch("cryptopilot.strategies.rsi_macd.calculate_macd", return_value=(macd_l, macd_sig, hist_s)):
+            with patch(
+                "cryptopilot.strategies.rsi_macd.calculate_macd",
+                return_value=(macd_l, macd_sig, hist_s),
+            ):
                 with patch("cryptopilot.strategies.rsi_macd.calculate_rsi", return_value=rsi_s):
-                    with patch("cryptopilot.strategies.rsi_macd.calculate_volume_ma", return_value=vol_ma_s):
-                        with patch("cryptopilot.strategies.rsi_macd.calculate_atr", return_value=atr_s):
+                    with patch(
+                        "cryptopilot.strategies.rsi_macd.calculate_volume_ma", return_value=vol_ma_s
+                    ):
+                        with patch(
+                            "cryptopilot.strategies.rsi_macd.calculate_atr", return_value=atr_s
+                        ):
                             signal = strategy.evaluate(df, "SOL/USDT")
                             assert signal.signal == SignalType.SELL
                             assert "overbought" in signal.rationale.lower()
@@ -123,10 +143,16 @@ class TestRSIMACDConfirmationStrategy:
         nan_s = pd.Series([np.nan] * n)
 
         with patch("cryptopilot.strategies.rsi_macd.calculate_ema", return_value=nan_s):
-            with patch("cryptopilot.strategies.rsi_macd.calculate_macd", return_value=(nan_s, nan_s, nan_s)):
+            with patch(
+                "cryptopilot.strategies.rsi_macd.calculate_macd", return_value=(nan_s, nan_s, nan_s)
+            ):
                 with patch("cryptopilot.strategies.rsi_macd.calculate_rsi", return_value=nan_s):
-                    with patch("cryptopilot.strategies.rsi_macd.calculate_volume_ma", return_value=nan_s):
-                        with patch("cryptopilot.strategies.rsi_macd.calculate_atr", return_value=nan_s):
+                    with patch(
+                        "cryptopilot.strategies.rsi_macd.calculate_volume_ma", return_value=nan_s
+                    ):
+                        with patch(
+                            "cryptopilot.strategies.rsi_macd.calculate_atr", return_value=nan_s
+                        ):
                             signal = strategy.evaluate(df, "BTC/USDT")
                             assert signal.signal == SignalType.HOLD
                             assert "warmup incomplete" in signal.rationale
@@ -169,10 +195,17 @@ class TestRSIMACDConfirmationStrategy:
         atr_s = pd.Series([2.0] * n)
 
         with patch("cryptopilot.strategies.rsi_macd.calculate_ema", return_value=ema_s):
-            with patch("cryptopilot.strategies.rsi_macd.calculate_macd", return_value=(macd_l, macd_sig, hist_s)):
+            with patch(
+                "cryptopilot.strategies.rsi_macd.calculate_macd",
+                return_value=(macd_l, macd_sig, hist_s),
+            ):
                 with patch("cryptopilot.strategies.rsi_macd.calculate_rsi", return_value=rsi_s):
-                    with patch("cryptopilot.strategies.rsi_macd.calculate_volume_ma", return_value=vol_ma_s):
-                        with patch("cryptopilot.strategies.rsi_macd.calculate_atr", return_value=atr_s):
+                    with patch(
+                        "cryptopilot.strategies.rsi_macd.calculate_volume_ma", return_value=vol_ma_s
+                    ):
+                        with patch(
+                            "cryptopilot.strategies.rsi_macd.calculate_atr", return_value=atr_s
+                        ):
                             signal = strategy.evaluate(df, "BTC/USDT")
                             assert signal.signal == SignalType.HOLD
                             assert "No setup" in signal.rationale

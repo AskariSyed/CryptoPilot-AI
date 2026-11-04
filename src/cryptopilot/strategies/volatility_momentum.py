@@ -6,6 +6,7 @@ trend filter (EMA 20), and dynamic ATR-scaled trailing stops.
 
 from datetime import UTC, datetime
 from typing import Any
+
 import numpy as np
 import pandas as pd
 
@@ -55,11 +56,7 @@ class VolatilityAdjustedMomentumStrategy(BaseStrategy):
         t = len(df) - 1
 
         curr_price = float(close.iloc[t])
-        timestamp = (
-            df["timestamp"].iloc[t]
-            if "timestamp" in df.columns
-            else datetime.now(UTC)
-        )
+        timestamp = df["timestamp"].iloc[t] if "timestamp" in df.columns else datetime.now(UTC)
         if hasattr(timestamp, "to_pydatetime"):
             timestamp = timestamp.to_pydatetime()
         if timestamp.tzinfo is None:
@@ -106,7 +103,11 @@ class VolatilityAdjustedMomentumStrategy(BaseStrategy):
 
         if any(np.isnan(v) for v in metrics.values() if isinstance(v, (int, float))):
             return self.create_hold_signal(
-                symbol, curr_price, "Indicator calculation produced NaNs (warmup incomplete)", metrics, timestamp
+                symbol,
+                curr_price,
+                "Indicator calculation produced NaNs (warmup incomplete)",
+                metrics,
+                timestamp,
             )
 
         # 2. Evaluate BUY Entry Conditions

@@ -3,7 +3,8 @@ Unit tests for cryptopilot.strategies.base.
 Covers: SignalType, StrategySignal schema validation, and BaseStrategy contract.
 """
 
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
+
 import pandas as pd
 import pytest
 from pydantic import ValidationError
