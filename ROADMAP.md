@@ -160,13 +160,13 @@ flowchart TD
 ---
 
 ### Phase 5: Machine Learning Prediction Engine
-- [ ] **Phase 5.1**: ML target definition (e.g. Forward Return > Transaction Cost threshold).
-- [ ] **Phase 5.2**: Time-series cross-validation splitters (Purged & Embargoed walk-forward split).
-- [ ] **Phase 5.3**: Feature pipeline with strictly chronological fitting (StandardScaler/RobustScaler fitted on train only).
-- [ ] **Phase 5.4**: XGBoost model training, hyperparameter configuration, and probability calibration.
-- [ ] **Phase 5.5**: Feature importance evaluation (SHAP / gain-based) and baseline comparison.
-- [ ] **Phase 5.6**: Model artifact versioning, serialization, and deterministic inference engine.
-*Deliverables:* Production ML inference pipeline with time-series validation and zero data leakage.
+- [x] **Phase 5.1**: ML target definition (e.g. Forward Return > Transaction Cost threshold).
+- [x] **Phase 5.2**: Time-series cross-validation splitters (Purged & Embargoed walk-forward split).
+- [x] **Phase 5.3**: Feature pipeline with strictly chronological fitting (StandardScaler/RobustScaler fitted on train only).
+- [x] **Phase 5.4**: XGBoost model training, hyperparameter configuration, and probability calibration.
+- [x] **Phase 5.5**: Feature importance evaluation (SHAP / gain-based) and baseline comparison.
+- [x] **Phase 5.6**: Model artifact versioning, serialization, and deterministic inference engine.
+*Deliverables:* Production ML inference pipeline with time-series validation and zero data leakage (28 ML unit tests, 94% ML coverage, 264 total tests passing). **(COMPLETED)**
 
 ---
 

@@ -12,6 +12,10 @@ uvicorn>=0.34.0
 python-dotenv>=1.0.1
 aiohttp>=3.10.0
 
+# Machine Learning
+scikit-learn>=1.6.0
+xgboost>=2.1.0
+
 # Testing, Typing & Quality
 pytest>=8.3.0
 pytest-cov>=6.0.0

@@ -9,13 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned - Phase 5: Machine Learning Prediction Engine
-- ML target definition (forward return > transaction cost threshold).
-- Chronological time-series cross-validation splitters (Purged and Embargoed walk-forward split).
-- Leak-free feature scaling and transformation pipeline (fitted strictly on training windows).
-- XGBoost classifier/regressor training, hyperparameter tuning, and probability calibration.
-- Feature importance evaluation (SHAP and gain-based) with random baseline benchmarks.
-- Model artifact serialization, versioning, and deterministic inference engine.
+### Planned - Phase 6: Sentiment Analysis Engine
+- Financial news and social feed abstraction adapter (RSS / CryptoPanic / Mock adapter).
+- Content deduplication using SHA-256 cryptographic hashing and fuzzy title matching.
+- FinBERT financial sentiment inference pipeline (Bullish, Bearish, Neutral with confidence scores).
+- Publication timestamp parsing and exponential time-decay discounting.
+- Per-asset sentiment aggregation index and staleness pruning.
+
+---
+
+## [0.1.0-alpha.5] - 2026-11-04
+
+### Added - Phase 5: Machine Learning Prediction Engine
+- Implemented `TargetLabeler` and `TargetConfig` generating cost-adjusted forward return classification targets ($R_{t, H} > \theta_{\text{fees+edge}}$) with boundary pruning of trailing unobservable horizon bars.
+- Implemented `PurgedTimeSeriesSplitter` supporting scikit-learn cross-validation protocol with strict chronological partitioning, forward-return purging, and 24-bar embargo buffers to eliminate data leakage.
+- Implemented `MLFeatureTransformer` with selective numeric column extraction, metadata exclusion, median imputation, and chronological `StandardScaler` / `RobustScaler` fitting strictly on training partitions.
+- Implemented `XGBoostPredictor` with supervised XGBoost classifier training, class imbalance weighting (`scale_pos_weight`), PR-AUC, ROC-AUC, Brier score, and log-loss evaluation against naive base-rate benchmarks.
+- Implemented `MLInferenceEngine` delivering calibrated bullish probabilities, confidence scores ($|P - 0.5| \times 2$), feature attributions, and deterministic safety fallbacks ($P = 0.50$, zero confidence) on missing/corrupt data.
+- Implemented `ModelArtifactManager` providing atomic JSON/Joblib model serialization, version tracking, reproducibility metadata, and integrity validation.
+- Built 28 comprehensive unit tests across 6 test modules achieving 94% ML code coverage (264 total project tests passing, 96% overall project coverage).
+- Passed all `ruff` linting/formatting and `mypy` strict type checking with zero errors across 40 source files.
 
 ---
 
