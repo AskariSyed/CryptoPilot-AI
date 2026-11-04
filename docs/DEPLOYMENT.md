@@ -72,3 +72,4 @@ docker compose up -d --build
 
 - **Database Dumps:** Automated daily `pg_dump` jobs backup portfolio ledgers, trade histories, and decision rationales.
 - **State Recovery:** Since orders are strictly paper simulated, restarting the daemon cleanly restores state from the PostgreSQL database ledger.
+

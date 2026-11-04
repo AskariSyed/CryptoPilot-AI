@@ -61,3 +61,4 @@ To guarantee financial correctness:
 1. **Atomic Portfolio Updates:** Balance deductions, order creations, and position adjustments occur within an ACID database transaction.
 2. **Double-Entry Discipline:** Virtual cash decreases only by the exact notional value plus fees of the filled asset.
 3. **Immutable Trade History:** Every trade record includes timestamp (UTC), order ID, fill price, quantity, fee, slippage, and rationale.
+

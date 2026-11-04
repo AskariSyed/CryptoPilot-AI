@@ -110,3 +110,4 @@ Once $S_{notional}$ is derived, it is subjected to four sequential boundary cond
    - 3 consecutive losing trades trigger a mandatory 12-hour observation pause.
 3. **Data Stale Circuit Breaker:**
    - If market data has not updated within 2 candle intervals, all new orders are blocked and existing open orders are canceled.
+

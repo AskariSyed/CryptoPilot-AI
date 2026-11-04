@@ -91,3 +91,4 @@ Every run generates a comparative plot and table against:
 - **Buy-and-Hold BTC**
 - **Buy-and-Hold ETH**
 - **Cash (0% return baseline)**
+

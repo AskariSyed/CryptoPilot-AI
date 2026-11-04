@@ -206,3 +206,4 @@ flowchart LR
 | **ML Model Exception / NaN Output** | Log model inference failure. Neutralize ML component ($Weight = 0$). Arbiter evaluates remaining inputs or defaults to `HOLD`. | Alert raised in dashboard; uses purely technical fallback. |
 | **Daily Loss Limit Hit ($\ge 2\%$)** | Close existing open position (if configured) or prevent any new opening orders. Trigger **TRADING_HALT**. | Trading halted until 00:00:00 UTC resets daily ledger. |
 | **Exchange Minimum Notional Violation** | Reject order. Size cannot safely meet exchange minimum without violating 30% allocation cap. | Log risk veto reason: `MIN_NOTIONAL_VIOLATION`. |
+

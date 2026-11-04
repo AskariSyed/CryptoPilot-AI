@@ -139,3 +139,4 @@ Enforces hierarchical alignment across higher (1h) and lower (15m) timeframes to
 When individual strategies generate conflicting signals (e.g. Strategy A BUY vs Strategy C SELL):
 1. The **Market Regime Classifier** determines which strategy class has precedence (e.g., trend-following dominates during $ADX > 25$; mean-reversion dominates during $ADX < 20$).
 2. If disagreement persists with high confidence on both sides, the decision engine defaults to **HOLD**.
+

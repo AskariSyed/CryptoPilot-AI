@@ -38,3 +38,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive testing strategy with the 8-Point Method Standard (`docs/TESTING.md`).
 - Dockerized deployment guide and disaster recovery plan (`docs/DEPLOYMENT.md`).
 - Architecture Decision Records ADR-001 through ADR-007 (`docs/DECISIONS.md`).
+

@@ -34,3 +34,4 @@ When receiving `SIGINT` (Ctrl+C) or `SIGTERM`:
 2. Active paper trading orders in `PENDING` state are cleanly transitioned to `CANCELED`.
 3. Open database connections and sessions are committed or rolled back cleanly.
 4. Telemetry logs record the clean shutdown event.
+

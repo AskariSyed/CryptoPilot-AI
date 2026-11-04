@@ -172,3 +172,4 @@ graph LR
 2. **Feature Alignment:** For candle at timestamp $T$, features are computed strictly using data from $\le T$.
 3. **ML Time-Series Validation:** No K-Fold random shuffling. Only walk-forward cross-validation with purge periods (discarding samples where prediction horizon overlaps) and embargo periods (discarding samples immediately following train set to remove auto-correlation).
 4. **StandardScaler / Transformers:** Scaling parameters (mean, standard deviation) are fitted exclusively on training splits and applied out-of-sample to validation and test splits.
+

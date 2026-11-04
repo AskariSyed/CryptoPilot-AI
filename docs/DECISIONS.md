@@ -55,3 +55,4 @@
 - **Context:** Traders fail predominantly due to poor risk management, over-allocation, and revenge trading after losses.
 - **Decision:** The Risk Manager is the supreme gatekeeper. Position sizes are mathematically derived: $\text{Size} = \frac{\text{Risk Budget}}{\text{Stop Loss Distance} + \text{Fees}}$. The 30% max allocation, 1% risk budget, and 2% daily loss limit are non-negotiable. If sizing cannot safely meet exchange minimum notional, the trade is rejected.
 - **Consequences:** Prevents catastrophic drawdowns, protects micro-capital accounts, and guarantees disciplined compounding.
+

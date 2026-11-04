@@ -202,3 +202,4 @@ Returns real-time risk parameters:
 
 #### `POST /api/v1/control/deposit`
 **Admin Endpoint**: Records a simulated monthly capital injection (e.g. $10) into the paper trading portfolio.
+

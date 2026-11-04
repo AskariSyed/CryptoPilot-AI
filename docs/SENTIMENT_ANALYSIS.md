@@ -49,3 +49,4 @@ For a given symbol $S$ with $N$ active recent articles:
 $$\text{SentimentIndex}(S) = \frac{\sum_{i=1}^{N} S_i \times w_{\text{time}, i} \times \text{Relevance}_i}{\sum_{i=1}^{N} w_{\text{time}, i} \times \text{Relevance}_i}$$
 
 If no relevant news exists in the window, $\text{SentimentIndex}(S) = 0.0$ (Neutral).
+

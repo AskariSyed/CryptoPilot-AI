@@ -305,3 +305,4 @@ flowchart TD
 4. **Exchange Disconnects & Stale Data:**
    - *Risk:* Acting on outdated prices during network outages.
    - *Mitigation:* Strict candle age verification (rejecting candles older than timeframe duration + tolerance) with automatic fallback to `HOLD`.
+

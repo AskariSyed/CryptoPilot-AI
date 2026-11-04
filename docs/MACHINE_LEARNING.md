@@ -74,3 +74,4 @@ Models are evaluated not on accuracy (which is misleading for imbalanced financi
 - **Brier Score:** Measuring probability calibration accuracy.
 - **Log-Loss:** Penalizing overconfident erroneous predictions.
 - **Baseline Comparison:** Models must beat a naive majority-class classifier and a simple momentum heuristic baseline on out-of-sample data before being approved for decision arbitration.
+

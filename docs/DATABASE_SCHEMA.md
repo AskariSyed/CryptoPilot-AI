@@ -257,3 +257,4 @@ General operational telemetry (heartbeats, API errors, backfill events).
 - `message` (TEXT, Not Null).
 - `metadata_json` (JSONB, Nullable).
 - `timestamp` (TIMESTAMP WITH TIME ZONE, Not Null).
+
