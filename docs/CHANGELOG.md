@@ -9,13 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned - Phase 2: Technical Indicators & Feature Engineering Engine
-- Moving averages (SMA, EMA, Volume-weighted MA) with verified formulas.
-- Momentum indicators (RSI, Stochastic Oscillator).
-- Trend & volatility indicators (MACD, Bollinger Bands, ATR, ADX, Historical Volatility).
-- Volume indicators (OBV, VWAP).
-- Multi-period return transformations and feature scaling.
-- Zero-lookahead bias test assertions comparing against independently verified reference data.
+### Planned - Phase 3: Trading Strategy Development
+- Strategy base interface and `StrategySignal` schema.
+- Strategy A: EMA Trend Following.
+- Strategy B: RSI & MACD Confirmation.
+- Strategy C: Bollinger Band Mean Reversion.
+- Strategy D: Volatility-Adjusted Momentum.
+- Strategy E: Multi-Timeframe Trend Confirmation.
+- Unit tests for all strategy signal generations and confidence calculations.
+
+---
+
+## [0.1.0-alpha.2] - 2026-11-04
+
+### Added - Phase 2: Technical Indicators & Feature Engineering Engine
+- Built pure, zero-lookahead moving averages (`calculate_sma`, `calculate_ema`, `calculate_wma`, `calculate_volume_ma`).
+- Built momentum indicators (`calculate_rsi` with Wilder's smoothing, `calculate_stochastic` %K and %D).
+- Built trend & volatility indicators (`calculate_macd`, `calculate_bollinger_bands` with bandwidth and %B, `calculate_atr`, `calculate_adx` with +DI/-DI, `calculate_historical_volatility`).
+- Built volume indicators (`calculate_obv` with directional accumulation, `calculate_vwap` with typical price weighting and rolling window support).
+- Built returns indicators (`calculate_returns`, `calculate_log_returns`).
+- Implemented `BaseIndicator` abstract class enforcing input DataFrame validation and warmup period contracts.
+- Built `FeaturePipeline` transforming OHLCV into an aligned, zero-lookahead ML feature matrix with warmup pruning.
+- Added 69 new unit tests (151 total passing) with zero-lookahead mathematical invariance proofs, achieving 96% test coverage.
+- Fully passed static type checks with `mypy` and linting/formatting checks with `ruff`.
 
 ---
 

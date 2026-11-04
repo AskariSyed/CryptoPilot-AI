@@ -19,4 +19,3 @@ __all__ = [
     "get_settings",
     "reset_settings",
 ]
-

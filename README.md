@@ -4,8 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Type Checked: mypy](https://img.shields.io/badge/type%20checked-mypy-blue.svg)](https://mypy-lang.org/)
-[![Coverage: 97%](https://img.shields.io/badge/coverage-97%25-brightgreen.svg)](docs/TESTING.md)
-[![Status: Phase 1 Market Data Engine](https://img.shields.io/badge/status-Phase%201%20(Market%20Data%20Engine)-brightgreen.svg)](ROADMAP.md)
+[![Coverage: 96%](https://img.shields.io/badge/coverage-96%25-brightgreen.svg)](docs/TESTING.md)
+[![Status: Phase 2 Indicator Engine](https://img.shields.io/badge/status-Phase%202%20(Indicator%20%26%20Feature%20Engine)-brightgreen.svg)](ROADMAP.md)
 
 **CryptoPilot AI** is a production-grade, modular, autonomous cryptocurrency spot trading agent engineered for mathematical discipline, zero-lookahead quantitative analysis, risk-first portfolio compounding, and transparent decision-making.
 
@@ -350,7 +350,7 @@ mypy src
 
 ## Development Roadmap & Status
 
-Current Status: **Phase 1: Project Foundation & Market Data Collection (Completed - 82 tests passing, 97% coverage)**
+Current Status: **Phase 2: Technical Indicator & Feature Engineering Engine (Completed - 151 tests passing, 96% coverage)**
 
 Track detailed implementation progress and acceptance criteria across all 15 phases in [ROADMAP.md](ROADMAP.md).
 See recent changes in [docs/CHANGELOG.md](docs/CHANGELOG.md).
