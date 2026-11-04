@@ -69,5 +69,5 @@ warn_unused_ignores = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["ccxt.*", "hypothesis.*"]
+module = ["ccxt.*"]
 ignore_missing_imports = true

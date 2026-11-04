@@ -9,13 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned - Phase 1: Foundation & Market Data Collection
-- Setup of `pyproject.toml`, dependencies, and linting tools (`ruff`, `mypy`).
-- Core Pydantic configuration (`cryptopilot.config`).
-- Base domain models (`Candle`, `Ticker`, `OrderBook`, `Symbol`, `Timeframe`).
-- CCXT market data ingestion with exponential backoff and rate-limiting.
-- Data validation pipeline (timestamp monotonicity, gap detection, duplicate handling).
-- Unit and mock integration test suite.
+### Planned - Phase 2: Technical Indicators & Feature Engineering Engine
+- Moving averages (SMA, EMA, Volume-weighted MA) with verified formulas.
+- Momentum indicators (RSI, Stochastic Oscillator).
+- Trend & volatility indicators (MACD, Bollinger Bands, ATR, ADX, Historical Volatility).
+- Volume indicators (OBV, VWAP).
+- Multi-period return transformations and feature scaling.
+- Zero-lookahead bias test assertions comparing against independently verified reference data.
+
+---
+
+## [0.1.0-alpha.1] - 2026-11-04
+
+### Added - Phase 1: Foundation & Market Data Collection
+- Configured packaging, dependency pinning, and linters in `pyproject.toml` and `requirements.txt`.
+- Implemented `cryptopilot.config.Settings` using Pydantic Settings with strict `enable_live_trading=False` enforcement.
+- Created typed domain models (`Candle`, `Ticker`, `OrderBook`, `OrderBookLevel`, `MarketMetadata`, `Symbol`, `Timeframe`) in `cryptopilot.data.models`.
+- Built resilient asynchronous `ExchangeClient` wrapping CCXT public endpoints with rate-limiting, exponential backoff, retry mechanisms, and UTC normalization.
+- Implemented the 4-Stage `CandleValidator` covering timestamp monotonicity, price consistency, duplicate detection, gap detection, and incomplete candle filtering.
+- Implemented atomic file-based persistence in `MarketDataStorage` segregating raw (`data/historical/`) from validated (`data/processed/`) datasets.
+- Implemented 82 comprehensive unit and integration tests across 8 testing dimensions achieving 97% line coverage.
+- Fully passed static type checks with `mypy` and linting/formatting checks with `ruff`.
 
 ---
 

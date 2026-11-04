@@ -21,7 +21,9 @@ class ExchangeConnectionError(MarketDataError):
 class RateLimitExceededError(MarketDataError):
     """Raised when exchange rate limit is breached (HTTP 429)."""
 
-    def __init__(self, message: str, retry_after_seconds: float = 5.0, details: object = None) -> None:
+    def __init__(
+        self, message: str, retry_after_seconds: float = 5.0, details: object = None
+    ) -> None:
         super().__init__(message, details)
         self.retry_after_seconds = retry_after_seconds
 

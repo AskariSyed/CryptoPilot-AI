@@ -3,24 +3,24 @@ CryptoPilot AI - Application Configuration & Settings.
 Validated via Pydantic v2 and pydantic-settings.
 """
 
-from enum import Enum
-from typing import List, Optional
+from enum import StrEnum
+
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class EnvironmentType(str, Enum):
+class EnvironmentType(StrEnum):
     DEVELOPMENT = "development"
     TESTING = "testing"
     PRODUCTION = "production"
 
 
-class TradingMode(str, Enum):
+class TradingMode(StrEnum):
     PAPER = "paper"
     LIVE = "live"
 
 
-class AccountType(str, Enum):
+class AccountType(StrEnum):
     SMALL_ACCOUNT = "small_account"
     RESEARCH = "research"
 
@@ -100,11 +100,11 @@ class Settings(BaseSettings):
         default="binance",
         description="Exchange identifier for CCXT public market data ingestion",
     )
-    default_symbols: List[str] = Field(
+    default_symbols: list[str] = Field(
         default=["BTC/USDT", "ETH/USDT", "SOL/USDT"],
         description="Monitored cryptocurrency trading pairs",
     )
-    default_timeframes: List[str] = Field(
+    default_timeframes: list[str] = Field(
         default=["1m", "15m", "1h", "4h"],
         description="Supported market candle timeframes",
     )
@@ -157,7 +157,7 @@ class Settings(BaseSettings):
 
     @field_validator("default_symbols", mode="before")
     @classmethod
-    def parse_symbols_list(cls, v: object) -> List[str]:
+    def parse_symbols_list(cls, v: object) -> list[str]:
         if isinstance(v, str):
             return [s.strip() for s in v.split(",") if s.strip()]
         if isinstance(v, list):
@@ -166,7 +166,7 @@ class Settings(BaseSettings):
 
     @field_validator("default_timeframes", mode="before")
     @classmethod
-    def parse_timeframes_list(cls, v: object) -> List[str]:
+    def parse_timeframes_list(cls, v: object) -> list[str]:
         if isinstance(v, str):
             return [tf.strip() for tf in v.split(",") if tf.strip()]
         if isinstance(v, list):
@@ -174,7 +174,7 @@ class Settings(BaseSettings):
         raise ValueError(f"Invalid format for timeframes: {v}")
 
 
-_cached_settings: Optional[Settings] = None
+_cached_settings: Settings | None = None
 
 
 def get_settings() -> Settings:
