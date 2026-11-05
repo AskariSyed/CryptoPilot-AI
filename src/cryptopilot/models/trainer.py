@@ -6,7 +6,7 @@ evaluates against naive baselines (PR-AUC, Brier score), and extracts feature im
 
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from sklearn.metrics import average_precision_score, brier_score_loss, log_loss, roc_auc_score
 from xgboost import XGBClassifier
 
@@ -22,6 +22,18 @@ class ModelEvaluationMetrics(BaseModel):
     baseline_brier_score: float = Field(ge=0.0, le=1.0)
     beats_baseline: bool
     sample_count: int
+
+    @field_validator(
+        "pr_auc",
+        "roc_auc",
+        "baseline_pr_auc",
+        "brier_score",
+        "baseline_brier_score",
+        mode="before",
+    )
+    @classmethod
+    def clamp_unit_interval(cls, v: float) -> float:
+        return max(0.0, min(1.0, float(v)))
 
 
 class XGBoostPredictor:
@@ -135,26 +147,28 @@ class XGBoostPredictor:
 
         # Calculate model metrics
         try:
-            pr_auc = float(average_precision_score(y_true, y_probs))
+            pr_auc = max(0.0, min(1.0, float(average_precision_score(y_true, y_probs))))
         except (ValueError, ZeroDivisionError):
             pr_auc = self.base_rate
 
         try:
-            roc_auc = float(roc_auc_score(y_true, y_probs))
+            roc_auc = max(0.0, min(1.0, float(roc_auc_score(y_true, y_probs))))
         except (ValueError, ZeroDivisionError):
             roc_auc = 0.50
 
-        brier = float(brier_score_loss(y_true, y_probs))
-        logloss = float(log_loss(y_true, y_probs))
+        brier = max(0.0, min(1.0, float(brier_score_loss(y_true, y_probs))))
+        logloss = max(0.0, float(log_loss(y_true, y_probs)))
 
         # Naive baseline: predicts constant base rate (training mean)
         baseline_probs = np.full_like(y_probs, fill_value=self.base_rate)
         try:
-            baseline_pr_auc = float(average_precision_score(y_true, baseline_probs))
+            baseline_pr_auc = max(
+                0.0, min(1.0, float(average_precision_score(y_true, baseline_probs)))
+            )
         except (ValueError, ZeroDivisionError):
             baseline_pr_auc = self.base_rate
 
-        baseline_brier = float(brier_score_loss(y_true, baseline_probs))
+        baseline_brier = max(0.0, min(1.0, float(brier_score_loss(y_true, baseline_probs))))
 
         # Model beats baseline if PR-AUC is higher and Brier score is lower
         beats_baseline = (pr_auc > baseline_pr_auc) and (brier <= baseline_brier)

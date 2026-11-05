@@ -33,6 +33,11 @@ class MLPrediction(BaseModel):
             return v.replace(tzinfo=UTC)
         return v
 
+    @field_validator("bullish_probability", "confidence_score", mode="before")
+    @classmethod
+    def clamp_unit_interval(cls, v: float) -> float:
+        return max(0.0, min(1.0, float(v)))
+
 
 class MLInferenceEngine:
     """
@@ -100,7 +105,7 @@ class MLInferenceEngine:
         try:
             X_scaled = self.transformer.transform(latest_row)
             probs = self.predictor.predict_proba(X_scaled)
-            bullish_prob = float(probs[-1, 1])
+            bullish_prob = max(0.0, min(1.0, float(probs[-1, 1])))
         except Exception:
             # Deterministic fallback on any transformation error
             return MLPrediction(
