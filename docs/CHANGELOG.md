@@ -9,12 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned - Phase 7: Autonomous Decision Engine
-- Strict decision schema definition (`Symbol`, `Decision`, `Confidence`, `Signals`, `ML`, `Sentiment`, `Risk`, `Rationale`).
-- Central Decision Arbiter combining technical, ML, and sentiment inputs.
-- Market regime classifier (Trending Bull, Trending Bear, Ranging, High Volatility).
-- Default-to-HOLD safety state on stale data, conflicting signals, or model degradation.
-- Transparent explanation generator producing interpretable rationales for every decision.
+### Planned - Phase 8: Capital & Portfolio Risk Management
+- Portfolio accounting (Cash, Invested Equity, Realized PnL, Unrealized PnL, Total Deposits).
+- Monthly contribution ledger ($10/month separation from trading PnL).
+- Position sizing algorithm: `Size = (Equity * RiskBudget) / (StopLossDist + EstFees)`.
+- Capital constraint validation (Max 30% allocation, Max 1 position, Min notional checks).
+- Risk controls: 2% daily loss circuit breaker, consecutive loss cooldown, emergency stop.
+- Automatic profit compounding logic with dynamic equity recalculation.
+
+---
+
+## [0.1.0-alpha.7] - 2026-11-05
+
+### Added - Phase 7: Autonomous Decision Engine
+- Implemented `MarketRegime` enum (`TRENDING_BULL`, `TRENDING_BEAR`, `RANGING`, `HIGH_VOLATILITY`, `UNKNOWN`) and `MarketRegimeClassifier` determining market states from ADX, EMA20/50 geometry, MACD, and ATR volatility ratios with regime-adapted strategy weight multipliers.
+- Implemented `SignalWeights`, `ArbitrationInput`, and `TradeDecision` domain models in `cryptopilot.agent.models` supporting standardized multi-stream signal arbitration, auto-normalized weighting, and full decision attribution metadata.
+- Implemented `SafetyGuard` in `cryptopilot.agent.safety` providing deterministic default-to-HOLD protections against stale data feeds, excessive bid/ask spreads (>0.50%), contradictory high-confidence technical signals, contrary ML predictions (P<0.35 on BUY or P>0.65 on SELL), low composite confidence (<0.55), and elevated high-volatility hurdles (<0.70).
+- Implemented `DecisionExplainer` in `cryptopilot.agent.explainer` generating transparent, auditable natural language rationales breaking down strategy consensus, ML probabilities, news sentiment, regime context, and safety vetoes.
+- Implemented `DecisionArbiter` in `cryptopilot.agent.arbiter` orchestrating multi-factor signal fusion, dynamic weight redistribution for missing/stale inputs, alignment conviction boosts, discordance penalties, and objective consensus stop-loss/take-profit derivation.
+- Built 28 comprehensive unit tests across 5 test suites in `tests/unit/` achieving 96% agent code coverage (323 total project tests passing, 96% overall project coverage).
+- Passed all `ruff` formatting/linting checks and `mypy` strict static type checks with zero errors across 55 source files.
 
 ---
 
