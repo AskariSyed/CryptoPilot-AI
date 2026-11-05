@@ -9,12 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned - Phase 9: Paper Trading & Virtual Execution Engine
-- Virtual wallet and balance ledger isolating research ($10,000) from micro-capital ($30).
-- Simulated order lifecycle (PENDING, SUBMITTED, PARTIALLY_FILLED, FILLED, CANCELED, REJECTED).
-- Realistic matching against public orderbook/ticker data including spread and slippage.
-- Bracket order support (simulated simultaneous Stop-Loss and Take-Profit).
-- Audit logging of all order submissions, fills, and ledger balance adjustments.
+### Planned - Phase 10: Database Schema & Performance Analytics
+- SQLAlchemy 2.0 async/sync models for all domain entities (Candles, Orders, Positions, Trades, RiskEvents, Portfolios).
+- Alembic database migration environment and initial automated schema revision scripts.
+- Atomic relational transaction management for position updates and trade execution fills.
+- Query repositories with composite indexing on `(symbol, timestamp)` and `(account_id, timestamp)`.
+- Performance analytics computation services (rolling Sharpe, Sortino, max drawdown, win rate).
+
+---
+
+## [0.1.0-alpha.9] - 2026-11-05
+
+### Added - Phase 9: Paper Trading & Virtual Execution Engine
+- Implemented `OrderStatus` (`PENDING`, `SUBMITTED`, `PARTIALLY_FILLED`, `FILLED`, `CANCELED`, `REJECTED`), `OrderType` (`MARKET`, `LIMIT`, `STOP_LOSS`, `TAKE_PROFIT`), `OrderSide` (`BUY`, `SELL`), `VirtualOrder`, `VirtualFill`, `BracketOrder`, and `ExecutionAuditEvent` in `cryptopilot.execution.models`.
+- Implemented `OrderMatcher` in `cryptopilot.execution.matcher` simulating realistic exchange mechanics:
+  - Quadratic non-linear volume slippage model $S = \text{base} + \text{impact} \cdot (\text{notional}/\text{volume})^2$ capped at 2.0%.
+  - Maker fee (0.05%) and taker fee (0.10%) calculation.
+  - Bid/ask spread handling with fallback default half-spread (0.025%).
+  - Limit order candle matching with favorable gap-open fills.
+  - Bracket trigger monitoring with strict intrabar Stop-Loss priority on dual-touch candles (preventing optimistic simulation bias).
+- Implemented `PaperBroker` in `cryptopilot.execution.broker` orchestrating simulated execution:
+  - Strict balance ledger isolation between micro-capital account `small_account_01` ($30) and research environment `research_lab_01` ($10,000).
+  - Synchronous immediate execution of MARKET orders with portfolio balance and position synchronization.
+  - Sized bracket order submission transforming `SizedOrderProposal` into linked entry, stop-loss, and take-profit orders.
+  - OHLCV candle processing driving limit order book matching, bracket exit triggers, and real-time portfolio mark-to-market valuations.
+  - Single and batch order cancellation with state validation.
+  - Complete, immutable audit event logging for full execution transparency.
+- Developed 26 unit tests across `test_execution_models.py`, `test_execution_matcher.py`, and `test_execution_broker.py` achieving **100% test coverage** on `cryptopilot.execution` (385 total project tests passing, 96.30% overall coverage).
+- Passed all static analysis checks: `ruff check`, `ruff format`, and strict `mypy` static typing with zero errors across all 68 source files.
 
 ---
 

@@ -6,7 +6,7 @@
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Type Checked: mypy](https://img.shields.io/badge/type%20checked-mypy-blue.svg)](https://mypy-lang.org/)
 [![Coverage: 96%](https://img.shields.io/badge/coverage-96%25-brightgreen.svg)](docs/TESTING.md)
-[![Status: Phase 8 Capital & Risk Management](https://img.shields.io/badge/status-Phase%208%20(Capital%20%26%20Risk%20Management)-brightgreen.svg)](ROADMAP.md)
+[![Status: Phase 9 Paper Trading Execution](https://img.shields.io/badge/status-Phase%209%20(Paper%20Trading%20Execution)-brightgreen.svg)](ROADMAP.md)
 
 **CryptoPilot AI** is a production-grade, modular, autonomous cryptocurrency spot trading agent engineered for mathematical discipline, zero-lookahead quantitative analysis, risk-first portfolio compounding, and transparent decision-making.
 
@@ -351,7 +351,7 @@ mypy src
 
 ## Development Roadmap & Status
 
-Current Status: **Phase 8: Capital & Portfolio Risk Management (Completed - 359 tests passing, 96% overall coverage, 98% risk/portfolio coverage)**
+Current Status: **Phase 9: Paper Trading & Virtual Execution Engine (Completed - 385 tests passing, 96% overall coverage, 100% execution coverage)**
 
 Track detailed implementation progress and acceptance criteria across all 15 phases in [ROADMAP.md](ROADMAP.md).
 See recent changes in [docs/CHANGELOG.md](docs/CHANGELOG.md).
