@@ -191,13 +191,13 @@ flowchart TD
 ---
 
 ### Phase 8: Capital & Portfolio Risk Management
-- [ ] **Phase 8.1**: Portfolio accounting (Cash, Invested Equity, Realized PnL, Unrealized PnL, Total Deposits).
-- [ ] **Phase 8.2**: Monthly contribution ledger ($10/month separation from trading PnL).
-- [ ] **Phase 8.3**: Position sizing algorithm: `Size = (Equity * RiskBudget) / (StopLossDist + EstFees)`.
-- [ ] **Phase 8.4**: Capital constraint validation (Max 30% allocation, Max 1 position, Min notional checks).
-- [ ] **Phase 8.5**: Risk controls: 2% daily loss circuit breaker, consecutive loss cooldown, emergency stop.
-- [ ] **Phase 8.6**: Automatic profit compounding logic with dynamic equity recalculation.
-*Deliverables:* Mathematical risk engine with 100% test coverage on critical accounting calculations.
+- [x] **Phase 8.1**: Portfolio accounting (Cash, Invested Equity, Realized PnL, Unrealized PnL, Total Deposits).
+- [x] **Phase 8.2**: Monthly contribution ledger ($10/month separation from trading PnL).
+- [x] **Phase 8.3**: Position sizing algorithm: `Size = (Equity * RiskBudget) / (StopLossDist + EstFees)`.
+- [x] **Phase 8.4**: Capital constraint validation (Max 30% allocation, Max 1 position, Min notional checks).
+- [x] **Phase 8.5**: Risk controls: 2% daily loss circuit breaker, consecutive loss cooldown, emergency stop.
+- [x] **Phase 8.6**: Automatic profit compounding logic with dynamic equity recalculation.
+*Deliverables:* Mathematical risk engine with 100% test coverage on critical accounting calculations (36 risk and portfolio unit tests, 98% module coverage, 100% on sizer and manager, 359 total tests passing). **(COMPLETED)**
 
 ---
 

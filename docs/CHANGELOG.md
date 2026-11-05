@@ -9,13 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned - Phase 8: Capital & Portfolio Risk Management
-- Portfolio accounting (Cash, Invested Equity, Realized PnL, Unrealized PnL, Total Deposits).
-- Monthly contribution ledger ($10/month separation from trading PnL).
-- Position sizing algorithm: `Size = (Equity * RiskBudget) / (StopLossDist + EstFees)`.
-- Capital constraint validation (Max 30% allocation, Max 1 position, Min notional checks).
-- Risk controls: 2% daily loss circuit breaker, consecutive loss cooldown, emergency stop.
-- Automatic profit compounding logic with dynamic equity recalculation.
+### Planned - Phase 9: Paper Trading & Virtual Execution Engine
+- Virtual wallet and balance ledger isolating research ($10,000) from micro-capital ($30).
+- Simulated order lifecycle (PENDING, SUBMITTED, PARTIALLY_FILLED, FILLED, CANCELED, REJECTED).
+- Realistic matching against public orderbook/ticker data including spread and slippage.
+- Bracket order support (simulated simultaneous Stop-Loss and Take-Profit).
+- Audit logging of all order submissions, fills, and ledger balance adjustments.
+
+---
+
+## [0.1.0-alpha.8] - 2026-11-05
+
+### Added - Phase 8: Capital & Portfolio Risk Management
+- Implemented `ContributionLedger` in `cryptopilot.portfolio.ledger` maintaining an immutable double-entry style audit log isolating external deposits ($10/month contributions) from organic trading profit and loss.
+- Implemented `PortfolioManager` in `cryptopilot.portfolio.manager` orchestrating cash, invested capital, active positions, real-time mark-to-market valuations, automatic profit compounding on wins, de-risking on losses, and peak equity / drawdown telemetry.
+- Implemented `PositionSizer` in `cryptopilot.risk.sizer` solving the exact mathematical formula `Size = (Equity * RiskBudget) / (StopLossDistance + RoundTripFees)`, bounded strictly to 30% max allocation, available cash, and rejecting any trade where capped size falls below exchange minimum order notional ($5.00).
+- Implemented `CircuitBreaker` in `cryptopilot.risk.circuit_breaker` enforcing the 2% daily loss limit (calculated on 00:00 UTC starting daily equity), 3-consecutive-loss 12-hour cooldowns, and manual/programmatic emergency stop switches.
+- Implemented `RiskManager` in `cryptopilot.risk.manager` as supreme controlling authority, evaluating `TradeDecision` proposals, enforcing single-position concurrency limits, prohibiting multi-position stacking, and emitting validated `SizedOrderProposal` payloads.
+- Built 36 comprehensive unit tests across 6 test modules in `tests/unit/` achieving 98% risk and portfolio code coverage (100% on `sizer.py` and `manager.py`, 359 total project tests passing, 96% overall project coverage).
+- Verified zero lint and type issues across 64 source files.
 
 ---
 
