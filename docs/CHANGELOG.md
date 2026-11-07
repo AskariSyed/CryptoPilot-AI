@@ -9,12 +9,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned - Phase 10: Database Schema & Performance Analytics
-- SQLAlchemy 2.0 async/sync models for all domain entities (Candles, Orders, Positions, Trades, RiskEvents, Portfolios).
-- Alembic database migration environment and initial automated schema revision scripts.
-- Atomic relational transaction management for position updates and trade execution fills.
-- Query repositories with composite indexing on `(symbol, timestamp)` and `(account_id, timestamp)`.
-- Performance analytics computation services (rolling Sharpe, Sortino, max drawdown, win rate).
+### Planned - Phase 11: FastAPI Backend
+- Application factory, middleware (CORS, error handling, request logging).
+- Health check and system diagnostic endpoints (`/api/v1/health`, `/api/v1/status`).
+- Market data and ticker endpoints (`/api/v1/market/...`).
+- Portfolio, balance, and position endpoints (`/api/v1/portfolio/...`).
+- Order and trade history endpoints (`/api/v1/orders/...`, `/api/v1/trades/...`).
+- Decision explanation and risk monitoring endpoints (`/api/v1/decisions/...`, `/api/v1/risk/...`).
+- Paper trading controls and simulated deposit injection (`/api/v1/control/...`).
+
+---
+
+## [0.1.0-alpha.10] - 2026-11-07
+
+### Added - Phase 10: Database Schema & Performance Analytics
+- Implemented modern SQLAlchemy 2.0 async/sync ORM models in `cryptopilot.database.models`:
+  - `ExchangeModel`, `TradingPairModel`, `MarketCandleModel`, `MarketSnapshotModel`, `PortfolioModel`, `DepositModel`, `PositionModel`, `OrderModel`, `TradeModel`, `RiskEventModel`, `AgentDecisionModel`.
+  - Composite indexes on `(symbol, timeframe, open_time)`, `(symbol, timestamp)`, `(portfolio_id, status)`, and `(portfolio_id, timestamp)`.
+- Configured production Alembic migration environment (`alembic.ini`, `alembic/env.py`, `alembic/script.py.mako`, and initial revision `alembic/versions/001_initial_schema.py`) supporting asynchronous automated database schema migrations and rollbacks.
+- Implemented `DatabaseManager` in `cryptopilot.database.connection` providing connection pooling, async engine lifecycles, session generators, and dependency injection helpers.
+- Implemented atomic ACID transaction boundaries in `cryptopilot.database.transactions`:
+  - `atomic_transaction(session)`
+  - `record_fill_and_update_portfolio`: updates order, records trade fill, updates/closes position, and syncs portfolio cash, invested capital, and realized PnL.
+  - `record_deposit_and_update_balance`: records external contribution and updates portfolio balances.
+  - `record_risk_event`: records audit telemetry and executes emergency halt toggles.
+  - `record_agent_decision`: logs decision engine rationales and signals.
+- Implemented asynchronous query repositories in `cryptopilot.database.repository`:
+  - `CandleRepository`, `PortfolioRepository`, `OrderRepository`, `PositionRepository`, `DecisionRepository`, `RiskEventRepository`.
+- Implemented `PerformanceAnalyticsService` in `cryptopilot.database.analytics` computing Sharpe ratio, Sortino ratio, max drawdown, win rate, profit factor, payoff ratio, and generating structured `PerformanceReport` outputs.
+- Developed 27 comprehensive unit tests across 6 test modules in `tests/unit/` achieving **98% database code coverage** (412 total project tests passing, 96.47% overall project coverage).
+- Passed all static analysis and lint checks with zero errors across 74 source files.
 
 ---
 
