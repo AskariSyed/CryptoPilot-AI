@@ -31,10 +31,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Ruff Lint Check
-        run: ruff check src tests
+        run: ruff check src tests alembic
 
       - name: Run Ruff Formatting Check
-        run: ruff format --check src tests
+        run: ruff format --check src tests alembic
 
       - name: Run MyPy Static Type Check
         run: mypy src
