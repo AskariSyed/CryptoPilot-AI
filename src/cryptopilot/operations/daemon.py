@@ -8,6 +8,7 @@ from datetime import UTC, datetime
 
 from cryptopilot.config.settings import get_settings
 from cryptopilot.data.exchange_client import ExchangeClient
+from cryptopilot.data.models import Candle
 from cryptopilot.database.connection import get_db_manager
 from cryptopilot.database.repository import CandleRepository
 from cryptopilot.operations.notifications import NotificationService
@@ -110,7 +111,7 @@ class TradingDaemon:
         """Request a graceful stop after the current operation."""
         self._stop_event.set()
 
-    async def _fetch_candles(self, symbol: str, timeframe: str):
+    async def _fetch_candles(self, symbol: str, timeframe: str) -> list[Candle]:
         if self.exchange is None:
             raise RuntimeError("Exchange client is not initialized.")
         return await self.exchange.fetch_ohlcv(symbol, timeframe, limit=self.candle_limit)
