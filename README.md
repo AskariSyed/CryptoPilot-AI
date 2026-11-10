@@ -6,7 +6,7 @@
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Type Checked: mypy](https://img.shields.io/badge/type%20checked-mypy-blue.svg)](https://mypy-lang.org/)
 [![Coverage: 96%](https://img.shields.io/badge/coverage-96%25-brightgreen.svg)](docs/TESTING.md)
-[![Status: Phase 10 Database Schema & Analytics](https://img.shields.io/badge/status-Phase%2010%20(Database%20%26%20Analytics)-brightgreen.svg)](ROADMAP.md)
+[![Status: Phase 13 Continuous Operation & Deployment](https://img.shields.io/badge/status-Phase%2013%20(Continuous%20Operation%20%26%20Deployment)-brightgreen.svg)](ROADMAP.md)
 
 **CryptoPilot AI** is a production-grade, modular, autonomous cryptocurrency spot trading agent engineered for mathematical discipline, zero-lookahead quantitative analysis, risk-first portfolio compounding, and transparent decision-making.
 
@@ -288,6 +288,8 @@ MONTHLY_CONTRIBUTION=10.0
 EXCHANGE_ID=binance
 DEFAULT_SYMBOLS=BTC/USDT,ETH/USDT,SOL/USDT
 DEFAULT_TIMEFRAMES=1m,15m,1h,4h
+DAEMON_CYCLE_INTERVAL_SECONDS=60
+LOG_FILE_PATH=logs/cryptopilot.log
 
 # Database Configuration (SQLite default for local development)
 DATABASE_URL=sqlite+aiosqlite:///./data/cryptopilot_dev.db
@@ -311,6 +313,11 @@ logs to `logs/cryptopilot.log`, and sends operational events to the console by d
 Webhook and SMTP adapters can be enabled by constructing `NotificationService` with
 the corresponding environment-backed adapter; credentials must never be committed.
 
+The worker is intentionally limited to public market-data ingestion. Decision,
+risk, and paper-broker execution remain isolated from live exchange order APIs.
+For local development, the default SQLite database is sufficient; production-like
+operation uses the PostgreSQL Compose service below.
+
 ### Docker Compose
 
 For a production-like API, worker, and PostgreSQL stack:
@@ -321,6 +328,15 @@ docker compose up --build
 ```
 
 Set `POSTGRES_PASSWORD` before starting the stack in shared environments.
+
+The Compose stack contains three services:
+
+- `app`: FastAPI monitoring and control API
+- `daemon`: continuous paper-trading market-data worker
+- `postgres`: persistent production database
+
+Both application services enforce `TRADING_MODE=paper` and
+`ENABLE_LIVE_TRADING=false`.
 
 ### Running Market Ingestion (Phase 1)
 ```bash
@@ -351,6 +367,9 @@ Testing is mandatory for every component under the 8-point method testing standa
 # Run all unit and integration tests with coverage reporting
 pytest --cov=cryptopilot --cov-report=term-missing
 
+# Run Phase 13 operation tests
+pytest tests/operations
+
 # Run Ruff linting check
 ruff check src tests
 
@@ -369,6 +388,10 @@ mypy src
 2. **No Withdrawal Capabilities:** The architecture strictly prohibits withdrawal permissions or keys.
 3. **Deterministic Failsafe:** Any data error, stale candle feed, or missing interval causes the decision engine to default to `HOLD`.
 4. **Secret Isolation:** Environment secrets are never logged or committed to version control.
+5. **Administrative Controls:** Deposit, halt, resume, and cancellation endpoints require
+   the configured bearer token and must only be exposed on trusted networks.
+6. **Production Secrets:** Set `API_SECRET_KEY` and `POSTGRES_PASSWORD` through the
+   deployment environment; do not place real credentials in `.env`, Compose files, or logs.
 
 ---
 
@@ -397,7 +420,11 @@ mypy src
 
 ## Development Roadmap & Status
 
-Current Status: **Phase 10: Database Schema & Performance Analytics (Completed - 412 tests passing, 96.47% overall coverage, 98% database coverage)**
+Current Status: **Phase 13: Continuous Operation, Monitoring & Deployment completed.**
+
+Phase 14 final integration, security review, stress testing, coverage verification,
+and production-readiness sign-off are the remaining validation activities. See
+[ROADMAP.md](ROADMAP.md) for the authoritative checklist.
 
 Track detailed implementation progress and acceptance criteria across all 15 phases in [ROADMAP.md](ROADMAP.md).
 See recent changes in [docs/CHANGELOG.md](docs/CHANGELOG.md).
