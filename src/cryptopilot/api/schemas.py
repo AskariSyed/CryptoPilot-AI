@@ -35,6 +35,11 @@ class HealthData(BaseModel):
     database: str = "CONNECTED"
     exchange_connectivity: str = "CONNECTED"
     circuit_breaker_active: bool = False
+    daemon_last_heartbeat: datetime | None = None
+    daemon_last_success: datetime | None = None
+    daemon_last_error: str | None = None
+    daemon_cycles_completed: int = 0
+    daemon_errors_seen: int = 0
 
 
 class SystemStatusData(BaseModel):

@@ -297,6 +297,31 @@ DATABASE_URL=sqlite+aiosqlite:///./data/cryptopilot_dev.db
 
 ## Running the Application
 
+### Continuous paper-trading worker
+
+The worker continuously fetches public OHLCV data and persists closed candles for the
+configured symbols and timeframes. It never submits live orders:
+
+```powershell
+python -m cryptopilot.operations
+```
+
+The worker exposes heartbeat counters through `GET /api/v1/health`, writes rotating
+logs to `logs/cryptopilot.log`, and sends operational events to the console by default.
+Webhook and SMTP adapters can be enabled by constructing `NotificationService` with
+the corresponding environment-backed adapter; credentials must never be committed.
+
+### Docker Compose
+
+For a production-like API, worker, and PostgreSQL stack:
+
+```powershell
+$env:API_SECRET_KEY = "replace-with-a-secret"
+docker compose up --build
+```
+
+Set `POSTGRES_PASSWORD` before starting the stack in shared environments.
+
 ### Running Market Ingestion (Phase 1)
 ```bash
 python -c "

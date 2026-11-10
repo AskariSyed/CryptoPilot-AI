@@ -130,6 +130,15 @@ class Settings(BaseSettings):
         le=5.0,
         description="Exponential backoff factor for retries",
     )
+    daemon_cycle_interval_seconds: float = Field(
+        default=60.0,
+        gt=0.0,
+        description="Delay between continuous market-data cycles",
+    )
+    log_file_path: str = Field(
+        default="logs/cryptopilot.log",
+        description="Rotating application log path",
+    )
 
     # Database Configuration
     database_url: str = Field(

@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from cryptopilot.api.deps import get_db_session
 from cryptopilot.api.schemas import ApiResponse, HealthData, SystemStatusData
 from cryptopilot.config.settings import get_settings
+from cryptopilot.operations.daemon import get_daemon_status
 
 router = APIRouter(tags=["System & Telemetry"])
 
@@ -24,6 +25,7 @@ START_TIME = time.time()
 async def get_health(session: AsyncSession = Depends(get_db_session)) -> ApiResponse[HealthData]:
     """Health check verifying database connectivity, trading mode, and circuit breaker status."""
     settings = get_settings()
+    daemon = get_daemon_status()
     uptime = time.time() - START_TIME
 
     # Verify DB connectivity
@@ -41,6 +43,11 @@ async def get_health(session: AsyncSession = Depends(get_db_session)) -> ApiResp
         database=db_status,
         exchange_connectivity="CONNECTED",
         circuit_breaker_active=False,
+        daemon_last_heartbeat=daemon.last_heartbeat,
+        daemon_last_success=daemon.last_success,
+        daemon_last_error=daemon.last_error,
+        daemon_cycles_completed=daemon.cycles_completed,
+        daemon_errors_seen=daemon.errors_seen,
     )
     return ApiResponse[HealthData](data=data, timestamp=datetime.now(UTC))
 
@@ -61,4 +68,3 @@ async def get_system_status() -> ApiResponse[SystemStatusData]:
         monthly_contribution=settings.monthly_contribution,
     )
     return ApiResponse[SystemStatusData](data=data, timestamp=datetime.now(UTC))
-

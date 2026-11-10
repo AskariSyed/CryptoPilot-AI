@@ -246,10 +246,10 @@ flowchart TD
 ---
 
 ### Phase 13: Continuous Operation, Monitoring & Deployment
-- [ ] **Phase 13.1**: Autonomous loop orchestration (async scheduler, candle tick event loop).
-- [ ] **Phase 13.2**: Health monitoring, heartbeat telemetry, and log rotation.
-- [ ] **Phase 13.3**: Automated notification adapter (console, webhook, email alerts on trades or halts).
-- [ ] **Phase 13.4**: Production Dockerfile and multi-service `docker-compose.yml` (App + PostgreSQL).
+- [x] **Phase 13.1**: Autonomous loop orchestration (async scheduler, candle tick event loop).
+- [x] **Phase 13.2**: Health monitoring, heartbeat telemetry, and log rotation.
+- [x] **Phase 13.3**: Automated notification adapter (console, webhook, email alerts on trades or halts).
+- [x] **Phase 13.4**: Production Dockerfile and multi-service `docker-compose.yml` (App + PostgreSQL).
 *Deliverables:* Production containerization and continuous daemon execution pipeline.
 
 ---

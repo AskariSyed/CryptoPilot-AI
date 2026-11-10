@@ -1,0 +1,53 @@
+services:
+  app:
+    build:
+      context: .
+    environment:
+      CRYPTOPILOT_ENV: production
+      TRADING_MODE: paper
+      ENABLE_LIVE_TRADING: "false"
+      DATABASE_URL: postgresql+asyncpg://cryptopilot:${POSTGRES_PASSWORD:-cryptopilot}@postgres:5432/cryptopilot
+      API_SECRET_KEY: ${API_SECRET_KEY:?Set API_SECRET_KEY before starting production services}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - app_logs:/app/logs
+    restart: unless-stopped
+
+  daemon:
+    build:
+      context: .
+    command: ["python", "-m", "cryptopilot.operations"]
+    environment:
+      CRYPTOPILOT_ENV: production
+      TRADING_MODE: paper
+      ENABLE_LIVE_TRADING: "false"
+      DATABASE_URL: postgresql+asyncpg://cryptopilot:${POSTGRES_PASSWORD:-cryptopilot}@postgres:5432/cryptopilot
+      API_SECRET_KEY: ${API_SECRET_KEY:?Set API_SECRET_KEY before starting production services}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - app_logs:/app/logs
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: cryptopilot
+      POSTGRES_USER: cryptopilot
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cryptopilot}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cryptopilot -d cryptopilot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
+  app_logs:
