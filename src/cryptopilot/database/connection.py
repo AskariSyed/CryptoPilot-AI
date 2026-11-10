@@ -39,8 +39,11 @@ class DatabaseManager:
 
         # Handle SQLite vs PostgreSQL specific parameters
         if "sqlite" in self.database_url:
-            # SQLite does not support standard connection pool pre-pinging in memory
-            pass
+            if ":memory:" in self.database_url:
+                from sqlalchemy.pool import StaticPool
+
+                engine_kwargs["connect_args"] = {"check_same_thread": False}
+                engine_kwargs["poolclass"] = StaticPool
         else:
             engine_kwargs["pool_pre_ping"] = True
             engine_kwargs["pool_size"] = 10

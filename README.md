@@ -221,6 +221,27 @@ git clone https://github.com/your-username/cryptopilot-ai.git
 cd cryptopilot-ai
 ```
 
+### Start the API and dashboard
+
+Install the project in editable mode so the `cryptopilot` package is available to Uvicorn:
+
+```powershell
+python -m pip install -e ".[dev]"
+uvicorn cryptopilot.api.app:app --reload
+```
+
+In a second terminal:
+
+```powershell
+cd dashboard
+npm install
+npm run dev
+```
+
+The dashboard uses the Vite development proxy to forward `/api` requests to
+`http://127.0.0.1:8000`. If the API is already running from a source checkout
+without editable installation, set `PYTHONPATH=src` before starting Uvicorn.
+
 ### 2. Set Up Virtual Environment
 ```bash
 python -m venv .venv

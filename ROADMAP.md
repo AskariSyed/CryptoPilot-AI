@@ -234,13 +234,13 @@ flowchart TD
 ---
 
 ### Phase 12: React Dashboard
-- [ ] **Phase 12.1**: Vite + React + TypeScript application initialization with Tailwind CSS.
-- [ ] **Phase 12.2**: Portfolio summary header (Balance, Equity, Deposits, Realized/Unrealized PnL, Drawdown).
-- [ ] **Phase 12.3**: Interactive price and equity curve charting (Candlestick + Trade Markers).
-- [ ] **Phase 12.4**: Live strategy signals, ML predictions, and sentiment breakdown panels.
-- [ ] **Phase 12.5**: Decision transparency card with AI explanation logs.
-- [ ] **Phase 12.6**: Active positions, open orders, and historical trade audit tables.
-- [ ] **Phase 12.7**: Visual toggle & warning badge strictly separating Research ($10,000) from Small-Account ($30).
+- [x] **Phase 12.1**: Vite + React + TypeScript application initialization with Tailwind CSS.
+- [x] **Phase 12.2**: Portfolio summary header (Balance, Equity, Deposits, Realized/Unrealized PnL, Drawdown).
+- [x] **Phase 12.3**: Interactive price and equity curve charting (Candlestick + Trade Markers).
+- [x] **Phase 12.4**: Live strategy signals, ML predictions, and sentiment breakdown panels.
+- [x] **Phase 12.5**: Decision transparency card with AI explanation logs.
+- [x] **Phase 12.6**: Active positions, open orders, and historical trade audit tables.
+- [x] **Phase 12.7**: Visual toggle & warning badge strictly separating Research ($10,000) from Small-Account ($30).
 *Deliverables:* Modern, reactive dashboard providing complete visibility into agent decisions and performance.
 
 ---
@@ -305,4 +305,3 @@ flowchart TD
 4. **Exchange Disconnects & Stale Data:**
    - *Risk:* Acting on outdated prices during network outages.
    - *Mitigation:* Strict candle age verification (rejecting candles older than timeframe duration + tolerance) with automatic fallback to `HOLD`.
-

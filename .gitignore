@@ -37,6 +37,7 @@ venv.bak/
 
 # Environment variables
 .env*.local
+.env.*
 !.env.example
 
 # Database files
@@ -45,6 +46,8 @@ venv.bak/
 *.sqlite3
 data/cryptopilot*.db
 data/postgres_data/
+data/historical/
+data/processed/
 
 # Logs
 logs/
@@ -68,6 +71,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+.ruff_cache/
 htmlcov/
 
 # Type checking
@@ -85,4 +89,18 @@ dmypy.json
 frontend/node_modules/
 frontend/dist/
 frontend/.env.local
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.env.local
+dashboard/.env.*.local
 
+# JavaScript package-manager logs and TypeScript build metadata
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+
+# OS-generated files
+.DS_Store
+Thumbs.db
