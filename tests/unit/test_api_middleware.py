@@ -56,4 +56,3 @@ async def test_middleware_timing_and_error_envelopes(dummy_app: FastAPI) -> None
         body_404 = res_404.json()
         assert body_404["success"] is False
         assert "Not Found" in body_404["error"]
-

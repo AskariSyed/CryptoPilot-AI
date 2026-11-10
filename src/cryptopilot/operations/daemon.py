@@ -64,7 +64,9 @@ class TradingDaemon:
         try:
             async with self.exchange:
                 self.status.exchange_connected = True
-                await self.notifications.publish("daemon_started", "Paper-trading market loop started.")
+                await self.notifications.publish(
+                    "daemon_started", "Paper-trading market loop started."
+                )
                 while not self._stop_event.is_set():
                     await self.run_cycle(settings.default_symbols, settings.default_timeframes)
                     try:
@@ -92,7 +94,12 @@ class TradingDaemon:
             self.status.last_success = heartbeat
             self.status.last_error = None
             self.status.cycles_completed += 1
-            logger.info("Market cycle %d completed for %d symbols and %d timeframes.", self.status.cycles_completed, len(symbols), len(timeframes))
+            logger.info(
+                "Market cycle %d completed for %d symbols and %d timeframes.",
+                self.status.cycles_completed,
+                len(symbols),
+                len(timeframes),
+            )
         except Exception as exc:
             self.status.last_error = str(exc)
             self.status.errors_seen += 1

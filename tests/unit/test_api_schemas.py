@@ -199,4 +199,3 @@ def test_control_requests() -> None:
         is_trading_halted=False,
     )
     assert risk.is_tripped is False
-

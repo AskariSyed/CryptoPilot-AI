@@ -56,4 +56,3 @@ async def test_get_system_status(api_client: httpx.AsyncClient) -> None:
     assert "small_account_01" in data["active_portfolios"]
     assert "BTC/USDT" in data["monitored_symbols"]
     assert data["live_trading_enabled"] is False
-

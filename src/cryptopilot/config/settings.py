@@ -3,9 +3,10 @@ CryptoPilot AI - Application Configuration & Settings.
 Validated via Pydantic v2 and pydantic-settings.
 """
 
+import secrets
 from enum import StrEnum
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -150,9 +151,20 @@ class Settings(BaseSettings):
     api_host: str = Field(default="0.0.0.0", description="FastAPI host binding")
     api_port: int = Field(default=8000, ge=1024, le=65535, description="FastAPI port")
     api_secret_key: str = Field(
-        default="dev-secret-key-change-in-production",
+        default_factory=lambda: secrets.token_urlsafe(32),
         description="Secret key for administrative endpoint protection",
     )
+
+    @model_validator(mode="after")
+    def validate_api_secret_key(self) -> "Settings":
+        if (
+            self.cryptopilot_env == EnvironmentType.PRODUCTION
+            and "api_secret_key" not in self.model_fields_set
+        ):
+            raise ValueError("API_SECRET_KEY must be configured in production.")
+        if len(self.api_secret_key) < 32:
+            raise ValueError("API_SECRET_KEY must contain at least 32 characters.")
+        return self
 
     @field_validator("enable_live_trading")
     @classmethod

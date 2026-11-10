@@ -4,6 +4,7 @@ Supplies async database sessions, singleton paper broker execution engine,
 and bearer token authentication guards.
 """
 
+import secrets
 from collections.abc import AsyncGenerator
 
 from fastapi import HTTPException, Security, status
@@ -64,7 +65,7 @@ def verify_admin_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    if credentials.credentials != expected_secret:
+    if not secrets.compare_digest(credentials.credentials, expected_secret):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Invalid administrative secret token.",

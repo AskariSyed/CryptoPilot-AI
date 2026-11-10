@@ -5,8 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Type Checked: mypy](https://img.shields.io/badge/type%20checked-mypy-blue.svg)](https://mypy-lang.org/)
-[![Coverage: 96%](https://img.shields.io/badge/coverage-96%25-brightgreen.svg)](docs/TESTING.md)
-[![Status: Phase 13 Continuous Operation & Deployment](https://img.shields.io/badge/status-Phase%2013%20(Continuous%20Operation%20%26%20Deployment)-brightgreen.svg)](ROADMAP.md)
+[![Coverage: 94%](https://img.shields.io/badge/coverage-94%25-brightgreen.svg)](docs/TESTING.md)
+[![Status: Phase 14 Validation](https://img.shields.io/badge/status-Phase%2014%20Validation-yellow.svg)](ROADMAP.md)
 
 **CryptoPilot AI** is a production-grade, modular, autonomous cryptocurrency spot trading agent engineered for mathematical discipline, zero-lookahead quantitative analysis, risk-first portfolio compounding, and transparent decision-making.
 
@@ -327,7 +327,9 @@ $env:API_SECRET_KEY = "replace-with-a-secret"
 docker compose up --build
 ```
 
-Set `POSTGRES_PASSWORD` before starting the stack in shared environments.
+`POSTGRES_PASSWORD` is required before starting the stack. The Compose file rejects
+startup when it is missing; use Docker secrets or an external secret manager for
+shared environments.
 
 The Compose stack contains three services:
 
@@ -370,6 +372,9 @@ pytest --cov=cryptopilot --cov-report=term-missing
 # Run Phase 13 operation tests
 pytest tests/operations
 
+# Run Phase 14 integration and stress tests
+pytest tests/integration/test_phase14_pipeline.py tests/operations/test_daemon.py
+
 # Run Ruff linting check
 ruff check src tests
 
@@ -389,7 +394,9 @@ mypy src
 3. **Deterministic Failsafe:** Any data error, stale candle feed, or missing interval causes the decision engine to default to `HOLD`.
 4. **Secret Isolation:** Environment secrets are never logged or committed to version control.
 5. **Administrative Controls:** Deposit, halt, resume, and cancellation endpoints require
-   the configured bearer token and must only be exposed on trusted networks.
+   the configured bearer token and must only be exposed on trusted networks. Development
+   processes generate a random token when none is supplied; production requires an
+   explicit `API_SECRET_KEY` with at least 32 characters.
 6. **Production Secrets:** Set `API_SECRET_KEY` and `POSTGRES_PASSWORD` through the
    deployment environment; do not place real credentials in `.env`, Compose files, or logs.
 
@@ -420,11 +427,24 @@ mypy src
 
 ## Development Roadmap & Status
 
-Current Status: **Phase 13: Continuous Operation, Monitoring & Deployment completed.**
+Current Status: **Phase 14 validation in progress: integration, stress, and security checks completed.**
 
-Phase 14 final integration, security review, stress testing, coverage verification,
-and production-readiness sign-off are the remaining validation activities. See
-[ROADMAP.md](ROADMAP.md) for the authoritative checklist.
+### Verified Phase 14 Results
+
+- 30 focused integration, daemon, configuration, and authentication tests pass.
+- End-to-end coverage includes candle validation, feature transformation, strategy
+  arbitration, risk sizing, and paper bracket execution.
+- Stress coverage includes exchange/network failure handling and gap-down stop-loss
+  behavior.
+- Security hardening includes generated development secrets, explicit production
+  `API_SECRET_KEY` enforcement, 32-character minimum length, and constant-time
+  token comparison.
+- Full-suite coverage is currently **94% globally** and **98% across risk/accounting**.
+- The full suite currently reports **430 passed and 5 pre-existing API fixture failures**.
+
+The final coverage and production-readiness gates remain open until the five existing
+API fixture failures are resolved and risk/accounting coverage reaches the documented
+100% target. See [ROADMAP.md](ROADMAP.md) for the authoritative checklist.
 
 Track detailed implementation progress and acceptance criteria across all 15 phases in [ROADMAP.md](ROADMAP.md).
 See recent changes in [docs/CHANGELOG.md](docs/CHANGELOG.md).

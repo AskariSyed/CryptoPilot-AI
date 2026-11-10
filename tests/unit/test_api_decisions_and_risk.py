@@ -110,4 +110,3 @@ async def test_get_risk_events(decisions_risk_client: httpx.AsyncClient) -> None
     events = body["data"]
     assert len(events) == 1
     assert events[0]["event_type"] == "CIRCUIT_BREAKER_CHECK"
-

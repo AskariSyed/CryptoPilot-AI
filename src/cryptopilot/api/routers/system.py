@@ -45,7 +45,7 @@ async def get_health(session: AsyncSession = Depends(get_db_session)) -> ApiResp
         circuit_breaker_active=False,
         daemon_last_heartbeat=daemon.last_heartbeat,
         daemon_last_success=daemon.last_success,
-        daemon_last_error=daemon.last_error,
+        daemon_last_error="DAEMON_ERROR" if daemon.last_error else None,
         daemon_cycles_completed=daemon.cycles_completed,
         daemon_errors_seen=daemon.errors_seen,
     )

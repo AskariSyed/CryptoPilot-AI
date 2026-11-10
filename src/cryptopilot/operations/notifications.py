@@ -36,10 +36,14 @@ class WebhookNotification:
     async def send(self, subject: str, message: str) -> None:
         timeout = aiohttp.ClientTimeout(total=self.timeout_seconds)
         async with aiohttp.ClientSession(timeout=timeout) as session:
-            async with session.post(self.url, json={"subject": subject, "message": message}) as response:
+            async with session.post(
+                self.url, json={"subject": subject, "message": message}
+            ) as response:
                 if response.status >= 400:
                     body = await response.text()
-                    raise RuntimeError(f"Webhook notification failed ({response.status}): {body[:200]}")
+                    raise RuntimeError(
+                        f"Webhook notification failed ({response.status}): {body[:200]}"
+                    )
 
 
 @dataclass(slots=True)

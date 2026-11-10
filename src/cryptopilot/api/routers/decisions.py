@@ -41,4 +41,3 @@ async def get_decisions(
         for d in decisions
     ]
     return ApiResponse[list[DecisionItem]](data=items, timestamp=datetime.now(UTC))
-

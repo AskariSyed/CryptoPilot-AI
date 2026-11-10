@@ -159,4 +159,3 @@ async def test_cancel_order(control_client: httpx.AsyncClient) -> None:
     )
     assert res.status_code == 200
     assert res.json()["data"]["status"] == "CANCELED"
-

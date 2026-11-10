@@ -24,6 +24,8 @@ def configure_logging(
 
     path = Path(log_path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    rotating = RotatingFileHandler(path, maxBytes=max_bytes, backupCount=backup_count, encoding="utf-8")
+    rotating = RotatingFileHandler(
+        path, maxBytes=max_bytes, backupCount=backup_count, encoding="utf-8"
+    )
     rotating.setFormatter(formatter)
     root.addHandler(rotating)

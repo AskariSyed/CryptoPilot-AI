@@ -64,4 +64,3 @@ async def get_risk_events(
         for e in events
     ]
     return ApiResponse[list[RiskEventItem]](data=items, timestamp=datetime.now(UTC))
-

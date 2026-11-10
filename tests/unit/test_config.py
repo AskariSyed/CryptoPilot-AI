@@ -39,6 +39,17 @@ class TestSettings:
             Settings(enable_live_trading=True)
         assert "Live trading execution is strictly disabled" in str(exc_info.value)
 
+    def test_production_requires_explicit_admin_secret(self) -> None:
+        """Verify production settings cannot use the generated development secret."""
+        with pytest.raises(ValidationError, match="API_SECRET_KEY must be configured"):
+            Settings(cryptopilot_env=EnvironmentType.PRODUCTION)
+
+        settings = Settings(
+            cryptopilot_env=EnvironmentType.PRODUCTION,
+            api_secret_key="a" * 32,
+        )
+        assert settings.api_secret_key == "a" * 32
+
     def test_symbols_parsing_variations(self) -> None:
         """Verify parsing comma-separated strings and lists."""
         s1 = Settings(default_symbols="BTC/USDT, ETH/USDT, SOL/USDT")  # type: ignore[arg-type]

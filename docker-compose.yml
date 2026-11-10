@@ -6,7 +6,7 @@ services:
       CRYPTOPILOT_ENV: production
       TRADING_MODE: paper
       ENABLE_LIVE_TRADING: "false"
-      DATABASE_URL: postgresql+asyncpg://cryptopilot:${POSTGRES_PASSWORD:-cryptopilot}@postgres:5432/cryptopilot
+      DATABASE_URL: postgresql+asyncpg://cryptopilot:${POSTGRES_PASSWORD}@postgres:5432/cryptopilot
       API_SECRET_KEY: ${API_SECRET_KEY:?Set API_SECRET_KEY before starting production services}
     ports:
       - "8000:8000"
@@ -25,7 +25,7 @@ services:
       CRYPTOPILOT_ENV: production
       TRADING_MODE: paper
       ENABLE_LIVE_TRADING: "false"
-      DATABASE_URL: postgresql+asyncpg://cryptopilot:${POSTGRES_PASSWORD:-cryptopilot}@postgres:5432/cryptopilot
+      DATABASE_URL: postgresql+asyncpg://cryptopilot:${POSTGRES_PASSWORD}@postgres:5432/cryptopilot
       API_SECRET_KEY: ${API_SECRET_KEY:?Set API_SECRET_KEY before starting production services}
     depends_on:
       postgres:
@@ -39,7 +39,7 @@ services:
     environment:
       POSTGRES_DB: cryptopilot
       POSTGRES_USER: cryptopilot
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cryptopilot}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD before starting production services}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
